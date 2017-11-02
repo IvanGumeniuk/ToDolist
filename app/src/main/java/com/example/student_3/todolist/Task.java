@@ -39,17 +39,17 @@ public class Task extends TaskObject {
             result += values > 1 ? "s" : "";
         } else {
             values = TimeUnit.HOURS.convert(difference, TimeUnit.MILLISECONDS);
-            if (values > 0 && values < Constants.HOURS_IN_DAY) {
+            if (values > 0) {
                 result = String.format(Locale.getDefault(), "%d hour", values);
                 result += values > 1 ? "s" : "";
             } else {
                 values = TimeUnit.MINUTES.convert(difference, TimeUnit.MILLISECONDS);
-                if(values > 0 && values < Constants.MINUTES_IN_HOUR){
+                if(values > 0){
                     result = String.format(Locale.getDefault(), "%d minute", values);
                     result += values > 1 ? "s" : "";
                 } else {
                     values = TimeUnit.SECONDS.convert(difference, TimeUnit.MILLISECONDS);
-                    if(values > 0 && values < Constants.SECONDS_IN_MINUTE){
+                    if(values > 0){
                         result = String.format(Locale.getDefault(), "%d second", values);
                         result += values > 1 ? "s" : "";
                     }
