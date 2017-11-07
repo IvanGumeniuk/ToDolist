@@ -44,30 +44,3 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 
-@Override
-public void writeToParcel(Parcel dest, int flags){
-    super.writeToParcel(dest, flags);
-    dest.writeString(this.name);
-    dest.writeLong(this.expireDate != null ? this.expireDate.getTime() : -1);
-    dest.writeTypedList(this.subTasksList);
-}
-
-protected Task(Parcel in){
-    super(in);
-    this.name = in.readString();
-    long tmpExpireDate = in.readLong();
-    this.expireDate = tmpExpireDate == -1 ? null : new Date(tmpExpireDate);
-    this.subTasksList = in.createTypedArrayList(SubTask.CREATOR);
-}
-
-public static final Creator<Task> CREATOR = new Creator<Task>(){
-    @Override
-    public Task createFromParcel(Parcel source){
-        return new Task(source);
-    }
-
-    @Override
-    public Task[] new Array(int size){
-        return new Task[size]
-    }
-}
