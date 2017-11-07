@@ -22,7 +22,7 @@ public class Task extends TaskObject {
     }
 
     public String getExpireDateString(){
-        return null;//Constants.DATE_FORMAT.format(expireDate);
+        return Constants.DATE_FORMAT.format(expireDate);
     }
 
     public boolean isExpired(){

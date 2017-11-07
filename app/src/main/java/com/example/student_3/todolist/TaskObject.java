@@ -1,13 +1,33 @@
 package com.example.student_3.todolist;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Student_3 on 02/11/2017.
  */
 
-public class TaskObject {
+public class TaskObject implements Parcelable{
     public enum TaskStatus{
         NEW,
         DONE
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.description);
+        dest.writeInt(this.status == null ? -1 : this.status.ordinal());
+    }
+
+    protected TaskObject(Parcel in){
+        this.description = in.readString();
+        int tmpStatus = in.readInt();
+        this.status = tmpStatus == -1 ? null : TaskStatus.values()[tmpStatus];
     }
 
     private String description;
