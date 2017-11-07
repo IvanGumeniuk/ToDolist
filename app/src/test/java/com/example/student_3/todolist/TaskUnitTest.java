@@ -1,10 +1,15 @@
 package com.example.student_3.todolist;
 
+import com.example.student_3.todolist.homework.MyLinkedList;
+import com.example.student_3.todolist.homework.PreMax;
+
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 
 /**
  * Created by Student_3 on 02/11/2017.
@@ -54,4 +59,39 @@ public class TaskUnitTest {
         task.setExpireDate(calendar.getTime());
         assertEquals("10 days", task.getLeftTime());
     }
+
+    @Test
+    public void checkPreMax() throws Exception {
+        assertNull(PreMax.findPreMax(new int[]{5,5,5,5,5}));
+        assertNull(PreMax.findPreMax(new int[]{1}));
+        assertNull(PreMax.findPreMax(new int[10]));
+        assertEquals(5, (int)PreMax.findPreMax(new int[]{5,6,5,5,5}));
+        assertEquals(-2, (int)PreMax.findPreMax(new int[]{-1,-2,-3,-5,-6}));
+        assertEquals(-3, (int)PreMax.findPreMax(new int[]{-6,-5,-4,-3,-2}));
+        assertEquals(1, (int)PreMax.findPreMax(new int[]{1, 5, 5}));
+        assertEquals(1, (int)PreMax.findPreMax(new int[]{5, 5, 1}));
+        assertEquals(2, (int)PreMax.findPreMax(new int[]{1, 2, 3}));
+        assertEquals(2, (int)PreMax.findPreMax(new int[]{3, 2, 1}));
+        assertEquals(2, (int)PreMax.findPreMax(new int[]{-6,-5,-4, 3, 2}));
+    }
+
+    @Test
+    public void checkMyLinkedList() throws Exception {
+        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
+        myLinkedList.add(5);
+        myLinkedList.add(5);
+        Random random = new Random(System.currentTimeMillis());
+        for(int i = 0; i < 50; i++){
+            myLinkedList.add(i * random.nextInt(10));
+        }
+        myLinkedList.print();
+        System.out.print("\nfoofoofoo\nfoofoofoo\n\n");
+        myLinkedList.print();
+        System.out.print("\n\n\n\n\n");
+        for(int i = 0; i < 50; i++){
+            myLinkedList.add(i * random.nextInt(10));
+        }
+        myLinkedList.print();
+    }
+
 }

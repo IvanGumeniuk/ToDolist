@@ -33,30 +33,35 @@ public class Task extends TaskObject {
         String result = "expired";
         long difference = expireDate.getTime() - System.currentTimeMillis();
         long values = TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS);
+        boolean resultFound = false;
 
         if(values > 0){
-            result = String.format(Locale.getDefault(), "%d day", values);
-            result += values > 1 ? "s" : "";
+            result = formatDate(values, "day");
+            resultFound = true;
         } else {
             values = TimeUnit.HOURS.convert(difference, TimeUnit.MILLISECONDS);
-            if (values > 0) {
-                result = String.format(Locale.getDefault(), "%d hour", values);
-                result += values > 1 ? "s" : "";
-            } else {
-                values = TimeUnit.MINUTES.convert(difference, TimeUnit.MILLISECONDS);
-                if(values > 0){
-                    result = String.format(Locale.getDefault(), "%d minute", values);
-                    result += values > 1 ? "s" : "";
-                } else {
-                    values = TimeUnit.SECONDS.convert(difference, TimeUnit.MILLISECONDS);
-                    if(values > 0){
-                        result = String.format(Locale.getDefault(), "%d second", values);
-                        result += values > 1 ? "s" : "";
-                    }
-                }
-            }
+        }
+        if (values > 0 && !resultFound) {
+            result = formatDate(values, "hour");
+            resultFound = true;
+        } else {
+            values = TimeUnit.MINUTES.convert(difference, TimeUnit.MILLISECONDS);
+        }
+        if(values > 0 && !resultFound){
+            result = formatDate(values, "minute");
+            resultFound = true;
+        } else {
+            values = TimeUnit.SECONDS.convert(difference, TimeUnit.MILLISECONDS);
+        }
+        if(values > 0 && !resultFound){
+            result = formatDate(values, "second");
         }
         return result;
+    }
+
+    private String formatDate(long value, String type){
+        String result = String.format(Locale.getDefault(), "%d " + type, value);
+        return value > 1 ? result + "s" : result;
     }
 
     public String getName() {
