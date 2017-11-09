@@ -13,6 +13,23 @@ public class TaskObject implements Parcelable{
         DONE
     }
 
+    public static final Creator<Task> CREATOR = new Creator<Task>(){
+        @Override
+        public Task createFromParcel(Parcel source){
+            return new Task(source);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[0];
+        }
+
+        //        @Override
+//        public Task[] new Array(int size){
+//            return new Task[size];
+//        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
