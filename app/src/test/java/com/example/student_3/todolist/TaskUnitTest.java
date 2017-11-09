@@ -2,6 +2,7 @@ package com.example.student_3.todolist;
 
 import com.example.student_3.todolist.homework.MyLinkedList;
 import com.example.student_3.todolist.homework.PreMax;
+import com.example.student_3.todolist.validators.Validator;
 
 import org.junit.Test;
 
@@ -92,6 +93,41 @@ public class TaskUnitTest {
             myLinkedList.add(i * random.nextInt(10));
         }
         myLinkedList.print();
+    }
+
+    @Test
+    public void checkNumberValidator() throws Exception {
+        Validator<Integer> integerValidator = new Validator.NumberValidatorBuilder<Integer>()
+                .setMinNumber(5)
+                .build();
+        assertEquals(true,integerValidator.validate(10));
+        assertEquals(false,integerValidator.validate(3));
+        assertEquals("must be bigger than 5", integerValidator.getLastMessage());
+        assertEquals(true,integerValidator.validate(5));
+        Validator<Double> doubleValidator = new Validator.NumberValidatorBuilder<Double, Double>()
+                .setMaxNumber(25.5523)
+                .setMinNumber(10.034)
+                .build();
+        assertEquals(true, doubleValidator.validate(17.54));
+        assertEquals(false, doubleValidator.validate(25.55231));
+        assertEquals("must be smaller than 25.5523", doubleValidator.getLastMessage());
+        assertEquals(false, doubleValidator.validate(10.033));
+        Validator<Float> floatValidator = new Validator.NumberValidatorBuilder<Float, Float>()
+                .setMinNumber((float)3.0)
+                .setMaxNumber((float)15.4)
+                .setRange((float)4, (float) 14)
+                .build();
+        assertEquals(true, floatValidator.validate((float)6));
+        assertEquals(false, floatValidator.validate((float)2.3));
+        assertEquals("must be in range [4.0, 14.0]", floatValidator.getLastMessage());
+        Validator<Byte> byteValidator = new Validator.NumberValidatorBuilder<Byte, Byte>()
+                .setMinNumber((byte)10)
+                .setMaxNumber((byte)2)
+                .build();
+        assertEquals(false, byteValidator.validate((byte) 2));
+        assertEquals(false, byteValidator.validate((byte) 7));
+        assertEquals("must be exactly 10", byteValidator.getLastMessage());
+
     }
 
 }
