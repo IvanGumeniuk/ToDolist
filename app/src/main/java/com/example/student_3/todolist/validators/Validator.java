@@ -242,7 +242,7 @@ public class Validator<T> {
             return this;
         }
 
-        public NumberValidatorBuilder setMaxNumber(C maxNumber, String ... message){
+        public NumberValidatorBuilder setMaxNumber(T maxNumber, String ... message){
             if(this.minNumber != null && this.minNumber.doubleValue() > maxNumber.doubleValue()){
                 this.maxNumber = this.minNumber;
                 message = new String[]{String.format("must be exactly %s", this.maxNumber)};
@@ -254,7 +254,7 @@ public class Validator<T> {
             return this;
         }
 
-        public NumberValidatorBuilder setRange(C minNumber, C maxNumber, String ... message){
+        public NumberValidatorBuilder setRange(T minNumber, T maxNumber, String ... message){
             if(minNumber.doubleValue() > maxNumber.doubleValue()){
                 this.maxNumber = minNumber;
                 this.minNumber = maxNumber;
