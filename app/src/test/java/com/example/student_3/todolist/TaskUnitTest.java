@@ -104,7 +104,7 @@ public class TaskUnitTest {
         assertEquals(false,integerValidator.validate(3));
         assertEquals("must be bigger than 5", integerValidator.getLastMessage());
         assertEquals(true,integerValidator.validate(5));
-        Validator<Double> doubleValidator = new Validator.NumberValidatorBuilder<Double, Double>()
+        Validator<Double> doubleValidator = new Validator.NumberValidatorBuilder<Double>()
                 .setMaxNumber(25.5523)
                 .setMinNumber(10.034)
                 .build();
@@ -112,7 +112,7 @@ public class TaskUnitTest {
         assertEquals(false, doubleValidator.validate(25.55231));
         assertEquals("must be smaller than 25.5523", doubleValidator.getLastMessage());
         assertEquals(false, doubleValidator.validate(10.033));
-        Validator<Float> floatValidator = new Validator.NumberValidatorBuilder<Float, Float>()
+        Validator<Float> floatValidator = new Validator.NumberValidatorBuilder<Float>()
                 .setMinNumber((float)3.0)
                 .setMaxNumber((float)15.4)
                 .setRange((float)4, (float) 14)
@@ -120,7 +120,7 @@ public class TaskUnitTest {
         assertEquals(true, floatValidator.validate((float)6));
         assertEquals(false, floatValidator.validate((float)2.3));
         assertEquals("must be in range [4.0, 14.0]", floatValidator.getLastMessage());
-        Validator<Byte> byteValidator = new Validator.NumberValidatorBuilder<Byte, Byte>()
+        Validator<Byte> byteValidator = new Validator.NumberValidatorBuilder<Byte>()
                 .setMinNumber((byte)10)
                 .setMaxNumber((byte)2)
                 .build();
