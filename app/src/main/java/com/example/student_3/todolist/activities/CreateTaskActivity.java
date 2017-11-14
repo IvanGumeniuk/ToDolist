@@ -1,4 +1,4 @@
-package com.example.student_3.todolist;
+package com.example.student_3.todolist.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,11 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.student_3.todolist.BundleKey;
+import com.example.student_3.todolist.R;
+import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.validators.Validator;
+
 public class CreateTaskActivity extends AppCompatActivity {
 
     private Task task;
@@ -18,6 +23,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private EditText nameEditText;
     private TextInputLayout descriptionWrapper;
     private EditText descriptionEditText;
+    private Validator stringValidator;
 
 
     @Override
@@ -33,6 +39,7 @@ public class CreateTaskActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Task not found", Toast.LENGTH_LONG).show();
             finish();
         }
+        stringValidator = new Validator.StringValidatorBuilder().setNotEmpty().build();
     }
 
     private void initUI(){
@@ -50,6 +57,16 @@ public class CreateTaskActivity extends AppCompatActivity {
     private void fillData(){
         task.setName(nameEditText.getText().toString());
         task.setDescription(descriptionEditText.getText().toString());
+    }
+
+    private boolean validate(TextInputLayout wrapper){
+        wrapper.setErrorEnabled(false);
+        boolean result = stringValidator.validate(wrapper.getEditText().getText().toString(), wrapper.getHint().toString());
+        if (!result) {
+            wrapper.setErrorEnabled(true);
+            wrapper.setError(stringValidator.getLastMessage());
+        }
+        return result;
     }
 
     @Override
