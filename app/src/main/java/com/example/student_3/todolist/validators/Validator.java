@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,18 +35,6 @@ public class Validator<T> {
         }
     }
 
-    private abstract static class DoubleCriteriaRule<T, R, C> extends Rule<T> {
-
-        protected C criteria;
-        protected R secondCriteria;
-
-        public DoubleCriteriaRule(String message, C criteria, R secondCriteria) {
-            super(message);
-            this.criteria = criteria;
-            this.secondCriteria = secondCriteria;
-        }
-    }
-
     private Set<Rule<T>> rules;
     private ArrayList<String> messages;
 
@@ -54,9 +43,7 @@ public class Validator<T> {
         messages = new ArrayList<>();
     }
 
-    public
-    @Nullable
-    String getLastMessage() {
+    public @Nullable String getLastMessage() {
         return messages.isEmpty() ? null : messages.get(messages.size() - 1);
     }
 
@@ -116,6 +103,7 @@ public class Validator<T> {
             String message = getMessageString(messages, String.format("must contain more than %d symbols", value));
             if(minLenghtRule != null){
                 minLenghtRule.message = message;
+                minLenghtRule.criteria = value;
             } else {
                 minLenghtRule = new CriteriaRule<String, Integer>(message, value) {
                     @Override
@@ -161,11 +149,10 @@ public class Validator<T> {
         }
     }
 
-    public static class NumberValidatorBuilder<T extends Number> {
+    public static class NumberValidatorBuilder<T extends Number & Comparable<? super T>> {
         Validator<T> validator;
         private CriteriaRule<T, T> minNumberRule;
         private CriteriaRule<T, T> maxNumberRule;
-        private DoubleCriteriaRule<T, T, T> rangeNumberRule;
         private T maxNumber;
         private T minNumber;
 
@@ -177,11 +164,12 @@ public class Validator<T> {
             String message = getMessageString(messages, String.format("must be bigger than %s", value));
             if(minNumberRule != null){
                 minNumberRule.message = message;
+                minNumberRule.criteria = value;
             } else {
                 minNumberRule = new CriteriaRule<T, T>(message, value) {
                     @Override
                     public boolean validate(T value) {
-                        return value.doubleValue() >= criteria.doubleValue();
+                        return value.compareTo(criteria) >= 0;
                     }
                 };
             }
@@ -192,32 +180,16 @@ public class Validator<T> {
             String message = getMessageString(messages, String.format("must be smaller than %s", value));
             if(maxNumberRule != null){
                 maxNumberRule.message = message;
+                maxNumberRule.criteria = value;
             } else {
                 maxNumberRule = new CriteriaRule<T, T>(message, value) {
                     @Override
                     public boolean validate(T value) {
-                        return value.doubleValue() <= criteria.doubleValue();
+                        return value.compareTo(criteria) <= 0;
                     }
                 };
             }
             return maxNumberRule;
-        }
-
-        private DoubleCriteriaRule<T, T, T> getRangeNumberRule(T minValue, T maxValue,  String ... messages){
-            String message = getMessageString(messages, String.format("must be in range [%s, %s]", minValue,
-                    maxValue));
-            if(rangeNumberRule != null){
-                rangeNumberRule.message = message;
-            } else {
-                rangeNumberRule = new DoubleCriteriaRule<T, T, T>(message, minValue, maxValue) {
-                    @Override
-                    public boolean validate(T value) {
-                        return value.doubleValue() >= criteria.doubleValue()
-                                && value.doubleValue() <= secondCriteria.doubleValue();
-                    }
-                };
-            }
-            return rangeNumberRule;
         }
 
         private String getMessageString(String[] messages, String defaultMessage) {
@@ -231,9 +203,10 @@ public class Validator<T> {
         }
 
         public NumberValidatorBuilder setMinNumber(T minNumber, String ... message){
-            if(this.maxNumber != null && this.maxNumber.doubleValue() < minNumber.doubleValue()){
+            if(this.maxNumber != null && this.maxNumber.compareTo(minNumber) <= 0){
                 this.minNumber = this.maxNumber;
-                message = new String[]{String.format("must be exactly %s", this.maxNumber)};
+                message = message.length > 0 ? message : new String[]{String.format("must be exactly %s",
+                        this.maxNumber)};
                 validator.rules.add(getMinNumberRule(this.minNumber, message));
             } else {
                 this.minNumber = minNumber;
@@ -243,9 +216,10 @@ public class Validator<T> {
         }
 
         public NumberValidatorBuilder setMaxNumber(T maxNumber, String ... message){
-            if(this.minNumber != null && this.minNumber.doubleValue() > maxNumber.doubleValue()){
+            if(this.minNumber != null && this.minNumber.compareTo(maxNumber) >= 0){
                 this.maxNumber = this.minNumber;
-                message = new String[]{String.format("must be exactly %s", this.maxNumber)};
+                message = message.length > 0 ? message : new String[]{String.format("must be exactly %s",
+                        this.maxNumber)};
                 validator.rules.add(getMinNumberRule(this.maxNumber, message));
             } else {
                 this.maxNumber = maxNumber;
@@ -254,20 +228,64 @@ public class Validator<T> {
             return this;
         }
 
-        public NumberValidatorBuilder setRange(T minNumber, T maxNumber, String ... message){
-            if(minNumber.doubleValue() > maxNumber.doubleValue()){
+        public NumberValidatorBuilder setRange(T minNumber, T maxNumber, String ... messages){
+            if(minNumber.compareTo(maxNumber) > 0){
                 this.maxNumber = minNumber;
                 this.minNumber = maxNumber;
             } else {
                 this.maxNumber = maxNumber;
                 this.minNumber = minNumber;
             }
-            validator.rules.add(getRangeNumberRule(this.minNumber, this.maxNumber, message));
+            validator.rules.add(getMinNumberRule(this.minNumber, messages));
+            validator.rules.add(getMaxNumberRule(this.maxNumber, messages));
             return this;
         }
 
         public Validator<? extends Number> build(){
             return validator;
+        }
+    }
+
+    public static class DateValidatorBuilder {
+        Validator<Date> validator;
+        private Rule<Date> notExpiredRule;
+
+        public DateValidatorBuilder() {
+            validator = new Validator<>();
+        }
+
+        private Rule<Date> getNotExpiredRule(String... messages) {
+            String message = getMessageString(messages, "the date has expired");
+            if(notExpiredRule != null){
+                notExpiredRule.message = message;
+            } else {
+                notExpiredRule = new Rule<Date>(message) {
+                    @Override
+                    public boolean validate(Date value) {
+                        return new Date().before(value);
+                    }
+                };
+            }
+            return notExpiredRule;
+        }
+
+        public DateValidatorBuilder setNotExpiredRule(String... message) {
+            validator.rules.add(getNotExpiredRule(message));
+            return this;
+        }
+
+        public Validator<Date> build(){
+            return validator;
+        }
+
+        private String getMessageString(String[] messages, String defaultMessage) {
+            String message = "";
+            if(messages == null || messages.length == 0){
+                message = defaultMessage;
+            } else {
+                message = messages[0];
+            }
+            return message;
         }
     }
 }

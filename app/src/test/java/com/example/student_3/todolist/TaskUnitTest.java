@@ -7,6 +7,7 @@ import com.example.student_3.todolist.validators.Validator;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
@@ -77,25 +78,6 @@ public class TaskUnitTest {
     }
 
     @Test
-    public void checkMyLinkedList() throws Exception {
-        MyLinkedList<Integer> myLinkedList = new MyLinkedList<>();
-        myLinkedList.add(5);
-        myLinkedList.add(5);
-        Random random = new Random(System.currentTimeMillis());
-        for(int i = 0; i < 50; i++){
-            myLinkedList.add(i * random.nextInt(10));
-        }
-        myLinkedList.print();
-        System.out.print("\nfoofoofoo\nfoofoofoo\n\n");
-        myLinkedList.print();
-        System.out.print("\n\n\n\n\n");
-        for(int i = 0; i < 50; i++){
-            myLinkedList.add(i * random.nextInt(10));
-        }
-        myLinkedList.print();
-    }
-
-    @Test
     public void checkNumberValidator() throws Exception {
         Validator<Integer> integerValidator = new Validator.NumberValidatorBuilder<Integer>()
                 .setMinNumber(5)
@@ -118,8 +100,8 @@ public class TaskUnitTest {
                 .setRange((float)4, (float) 14)
                 .build();
         assertEquals(true, floatValidator.validate((float)6));
-        assertEquals(false, floatValidator.validate((float)2.3));
-        assertEquals("must be in range [4.0, 14.0]", floatValidator.getLastMessage());
+        assertEquals(false, floatValidator.validate((float)3.5));
+        assertEquals("must be bigger than 4.0", floatValidator.getLastMessage());
         Validator<Byte> byteValidator = new Validator.NumberValidatorBuilder<Byte>()
                 .setMinNumber((byte)10)
                 .setMaxNumber((byte)2)
@@ -127,7 +109,26 @@ public class TaskUnitTest {
         assertEquals(false, byteValidator.validate((byte) 2));
         assertEquals(false, byteValidator.validate((byte) 7));
         assertEquals("must be exactly 10", byteValidator.getLastMessage());
-
+        Validator<Integer> strangeMessageIntegerValidator = new Validator.NumberValidatorBuilder<Integer>()
+                .setMinNumber(5, "foo")
+                .setMaxNumber(10, "bar")
+                .build();
+        assertEquals(true, strangeMessageIntegerValidator.validate(6));
+        assertEquals(null, strangeMessageIntegerValidator.getLastMessage());
+        assertEquals(false, strangeMessageIntegerValidator.validate(11));
+        assertEquals("bar", strangeMessageIntegerValidator.getLastMessage());
+        assertEquals(false, strangeMessageIntegerValidator.validate(4));
+        assertEquals("foo", strangeMessageIntegerValidator.getLastMessage());
     }
 
+    @Test
+    public void checkDateValidator() throws Exception {
+        Validator<Date> dateValidator = new Validator.DateValidatorBuilder()
+                .setNotExpiredRule()
+                .build();
+        assertEquals(true, dateValidator.validate(new Date(System.currentTimeMillis() + (long)1000)));
+        assertEquals(null, dateValidator.getLastMessage());
+        assertEquals(false, dateValidator.validate(new Date(System.currentTimeMillis() - (long)1000)));
+        assertEquals("the date has expired", dateValidator.getLastMessage());
+    }
 }
