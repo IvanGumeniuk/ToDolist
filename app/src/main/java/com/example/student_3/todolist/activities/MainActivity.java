@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
-import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.adapters.TaskAdapter;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;

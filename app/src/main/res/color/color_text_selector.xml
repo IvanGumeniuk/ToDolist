@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:todolist="http://schemas.android.com/apk/res/com.example.student_3.todolist"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item todolist:state_task_not_expired="false"
+        android:color="@android:color/holo_red_dark" />
+    <item android:color="#000000"/>
+</selector>

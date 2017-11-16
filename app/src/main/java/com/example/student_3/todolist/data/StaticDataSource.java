@@ -3,7 +3,7 @@ package com.example.student_3.todolist.data;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
-import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.models.Task;
 
 import java.util.ArrayList;
 

@@ -8,4 +8,40 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+
+    <style name="ItemLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginEnd">@dimen/space4</item>
+        <item name="android:layout_marginStart">@dimen/space4</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="categoryTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/space16</item>
+        <item name="android:layout_marginTop">@dimen/space16</item>
+        <item name="android:layout_marginStart">@dimen/space8</item>
+        <item name="android:drawablePadding">@dimen/space8</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Medium</item>
+    </style>
+
+    <style name="ItemLayoutRed" parent="ItemLayout">
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="categoryTextView.White">
+        <item name="android:colorAccent">@android:color/white</item>
+    </style>
+
+    <style name="categoryTextView.White.Large">
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Large</item>
+    </style>
+
 </resources>

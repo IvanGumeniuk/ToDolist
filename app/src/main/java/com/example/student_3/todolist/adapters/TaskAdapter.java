@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.student_3.todolist.R;
-import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.models.Task;
+import com.example.student_3.todolist.validators.Validator;
+import com.example.student_3.todolist.views.TaskTextView;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,10 +22,14 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
     private List<Task> tasks;
+    private Validator<Date> dateValidator;
 
     public TaskAdapter(@NonNull List<Task> tasks){
         super();
         this.tasks = tasks;
+        dateValidator = new Validator.DateValidatorBuilder()
+                .setNotExpiredRule()
+                .build();
     }
 
     @Override
@@ -44,18 +51,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     class TaskViewHolder extends RecyclerView.ViewHolder{
-        TextView name;
-        TextView description;
+        TaskTextView name;
+        TaskTextView description;
 
         public TaskViewHolder(View itemView){
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.nameTextView);
-            description = (TextView) itemView.findViewById(R.id.descriptionTextView);
+            name = (TaskTextView) itemView.findViewById(R.id.nameTextView);
+            description = (TaskTextView) itemView.findViewById(R.id.descriptionTextView);
         }
 
         public void bind(Task task){
             name.setText(task.getName());
             description.setText(task.getDescription());
+            if(!dateValidator.validate(task.getExpireDate())){
+                name.setNotExpired(false);
+                description.setNotExpired(false);
+            }
         }
     }
 }

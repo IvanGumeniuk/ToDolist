@@ -1,6 +1,7 @@
 package com.example.student_3.todolist.activities;
 
 import android.app.Activity;
+import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,15 +9,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
-import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.dialogs.DatePickerFragment;
+import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.validators.Validator;
 
-public class CreateTaskActivity extends AppCompatActivity {
+import java.util.Date;
+
+public class CreateTaskActivity extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener {
 
     private Task task;
     private TextInputLayout nameWrapper;
@@ -24,6 +30,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private TextInputLayout descriptionWrapper;
     private EditText descriptionEditText;
     private Validator stringValidator;
+    private TextView dateTextView;
 
 
     @Override
@@ -42,11 +49,23 @@ public class CreateTaskActivity extends AppCompatActivity {
         stringValidator = new Validator.StringValidatorBuilder().setNotEmpty().build();
     }
 
+    public void showDatePickerDialog(View v){
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+    @Override
+    public void onDateSelected(Date date) {
+        task.setExpireDate(date);
+        dateTextView.setText(task.getExpireDateString());
+    }
+
     private void initUI(){
         nameWrapper = (TextInputLayout) findViewById(R.id.nameWrapper);
         nameEditText = (EditText) findViewById(R.id.nameEditText);
         descriptionWrapper = (TextInputLayout) findViewById(R.id.descriptionWrapper);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        dateTextView = (TextView) findViewById(R.id.dateTextView);
     }
 
     private void setData(){

@@ -34,4 +34,29 @@
             android:hint="@string/task_description"
             android:maxLength="1024"/>
     </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:onClick="showDatePickerDialog"
+        style="@style/ItemLayout">
+
+        <TextView
+            android:id="@+id/dateTextView"
+            android:drawableStart="@drawable/ic_today_black_24dp"
+            tools:text="11-11-2017"
+            style="@style/categoryTextView" />
+
+        <View style="@style/Divider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:onClick="showDatePickerDialog"
+        style="@style/ItemLayoutRed">
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:drawableStart="@drawable/ic_today_black_24dp"
+            tools:text="My Category"
+            style="@style/categoryTextView.White.Large" />
+        <View style="@style/Divider" />
+    </LinearLayout>
 </LinearLayout>

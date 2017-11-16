@@ -3,17 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <com.example.student_3.todolist.views.TaskTextView
         android:id="@+id/nameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textColor="@color/color_text_selector"
         android:textAppearance="@android:style/TextAppearance.Material.Large"/>
 
-    <TextView
+    <com.example.student_3.todolist.views.TaskTextView
         android:id="@+id/descriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/color_text_selector"
         android:text="TextView" />
 
 </LinearLayout>

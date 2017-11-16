@@ -1,14 +1,14 @@
 package com.example.student_3.todolist;
 
-import com.example.student_3.todolist.homework.MyLinkedList;
 import com.example.student_3.todolist.homework.PreMax;
+import com.example.student_3.todolist.models.Task;
+import com.example.student_3.todolist.models.TaskObject;
 import com.example.student_3.todolist.validators.Validator;
 
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;

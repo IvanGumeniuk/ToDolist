@@ -1,9 +1,9 @@
-package com.example.student_3.todolist;
+package com.example.student_3.todolist.models;
 
 import android.os.Parcel;
 
-import java.sql.Time;
-import java.util.ArrayList;
+import com.example.student_3.todolist.Constants;
+
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;

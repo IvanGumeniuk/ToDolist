@@ -7,7 +7,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.example.student_3.todolist.Task;
+import com.example.student_3.todolist.models.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
