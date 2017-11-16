@@ -22,6 +22,7 @@ import com.example.student_3.todolist.Task;
 import com.example.student_3.todolist.adapters.TaskAdapter;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
+import com.example.student_3.todolist.decorators.GridSpacingItemDecoration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private IDataSource dataSource;
     private boolean gridLayout = true;
     private DividerItemDecoration dividerItemDecoration;
+    private GridSpacingItemDecoration gridSpacingItemDecoration;
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
@@ -63,14 +65,21 @@ public class MainActivity extends AppCompatActivity {
             }
             dividerItemDecoration = new DividerItemDecoration(taskRecyclerView.getContext(),
                     linearLayoutManager.getOrientation());
+            taskRecyclerView.removeItemDecoration(gridSpacingItemDecoration);
             taskRecyclerView.addItemDecoration(dividerItemDecoration);
             taskRecyclerView.setLayoutManager(linearLayoutManager);
         } else {
             if(gridLayoutManager == null){
                 int amountOfColumns = getResources().getInteger(R.integer.grid_columns_amount);
                 gridLayoutManager = new GridLayoutManager(this, amountOfColumns);
+                gridSpacingItemDecoration = new GridSpacingItemDecoration(getResources()
+                        .getInteger(R.integer.grid_columns_amount),
+                        getResources().getDimensionPixelSize(R.dimen.grid_spacing_horizontal),
+                        getResources().getDimensionPixelSize(R.dimen.grid_spacing_vertical),
+                        getResources().getDimensionPixelSize(R.dimen.grid_spacing_edge));
             }
             taskRecyclerView.removeItemDecoration(dividerItemDecoration);
+            taskRecyclerView.addItemDecoration(gridSpacingItemDecoration);
             taskRecyclerView.setLayoutManager(gridLayoutManager);
         }
     }

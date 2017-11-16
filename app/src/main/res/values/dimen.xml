@@ -2,4 +2,7 @@
 <resources>
     <dimen name="space16">16dip</dimen>
     <integer name="grid_columns_amount">2</integer>
+    <dimen name="grid_spacing_vertical">3dip</dimen>
+    <dimen name="grid_spacing_horizontal">8dip</dimen>
+    <dimen name="grid_spacing_edge">3dip</dimen>
 </resources>
