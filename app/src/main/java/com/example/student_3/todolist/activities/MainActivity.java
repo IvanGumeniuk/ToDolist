@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
+import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.adapters.TaskAdapter;
 import com.example.student_3.todolist.data.IDataSource;
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton createTaskButton;
     private RecyclerView taskRecyclerView;
-    private TaskAdapter taskAdapter;
+    private TaskAdapterWithStyles taskAdapter;
     private IDataSource dataSource;
     private boolean gridLayout = true;
     private DividerItemDecoration dividerItemDecoration;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void initTaskRecycler(){
         taskRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
         setLayoutForRecyclerView();
-        taskAdapter = new TaskAdapter(dataSource.getTaskList());
+        taskAdapter = new TaskAdapterWithStyles(dataSource.getTaskList());
         taskRecyclerView.setAdapter(taskAdapter);
     }
 

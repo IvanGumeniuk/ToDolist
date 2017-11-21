@@ -14,6 +14,32 @@
         <item name="android:background">@color/gray</item>
     </style>
 
+    <style name="Item" parent="AppTheme">
+        <item name="layoutBackgroundColor">@color/gray</item>
+        <item name="textColorSmall">#0a5d0a</item>
+        <item name="textColorLarge">#042079</item>
+    </style>
+
+    <style name="Item.Expired">
+        <item name="layoutBackgroundColor">#ff0</item>
+        <item name="textColorSmall">#F00</item>
+        <item name="textColorLarge">#8c0000</item>
+    </style>
+
+    <style name="ItemTextViewSmall">
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Small</item>
+        <item name="android:textColor">?attr/textColorSmall</item>
+    </style>
+
+    <style name="ItemTextViewLarge">
+        <item name="android:textAppearance">@android:style/TextAppearance.Material.Large</item>
+        <item name="android:textColor">?attr/textColorLarge</item>
+    </style>
+
+    <style name="ItemTaskLayout">
+        <item name="android:background">?attr/layoutBackgroundColor</item>
+    </style>
+
     <style name="ItemLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

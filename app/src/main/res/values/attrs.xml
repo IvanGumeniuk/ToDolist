@@ -3,4 +3,10 @@
     <declare-styleable name="TaskState">
         <attr name="state_task_not_expired" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="Energy">
+        <attr name="textColorSmall" format="color"/>
+        <attr name="textColorLarge" format="color"/>
+        <attr name="layoutBackgroundColor" format="color"/>
+    </declare-styleable>
 </resources>
