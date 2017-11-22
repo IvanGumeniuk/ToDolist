@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 if(resultCode == Activity.RESULT_OK){
                     Task task = data.getParcelableExtra(BundleKey.TASK.name());
                     if(task != null){
-                        dataSource.create(task);
+                        dataSource.createTask(task);
                         taskAdapter.notifyDataSetChanged();
                     }
                 }

@@ -21,7 +21,7 @@ public class StaticDataSource implements IDataSource {
     }
 
     @Override
-    public boolean create(@NonNull Task task) {
+    public boolean createTask(@NonNull Task task) {
         return tasks.add(task);
     }
 
