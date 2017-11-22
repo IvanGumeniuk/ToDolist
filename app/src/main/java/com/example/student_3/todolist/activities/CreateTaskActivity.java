@@ -99,7 +99,9 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.item_save:
-                saveTask();
+                if(validate(nameWrapper) && validate(descriptionWrapper)) {
+                    saveTask();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

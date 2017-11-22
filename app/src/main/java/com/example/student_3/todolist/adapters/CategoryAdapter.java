@@ -1,6 +1,6 @@
 package com.example.student_3.todolist.adapters;
 
-import android.os.Parcel;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +24,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private List<Category> searchedCategories;
     private OnCategoryClickListener clickListener;
 
-    public CategoryAdapter(List<Category> categories){
+    public CategoryAdapter(@NonNull List<Category> categories){
+        super();
         this.allCategories = categories;
         this.searchedCategories = new ArrayList<>(categories);
     }
 
-    public CategoryAdapter(List<Category> categories, OnCategoryClickListener clickListener){
+    public CategoryAdapter(@NonNull List<Category> categories, OnCategoryClickListener clickListener){
         this(categories);
         this.clickListener = clickListener;
     }
@@ -52,15 +53,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public void filter(String text){
+        searchedCategories.clear();
         if(text.length() > 0){
-            searchedCategories.clear();
             for (Category category : allCategories) {
-                if(category.getName().startsWith(text)){
+                if(category.getName().toLowerCase().startsWith(text.toLowerCase())){
                     searchedCategories.add(category);
                 }
             }
-            notifyDataSetChanged();
+        } else {
+            searchedCategories.addAll(allCategories);
         }
+        notifyDataSetChanged();
     }
 
     class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

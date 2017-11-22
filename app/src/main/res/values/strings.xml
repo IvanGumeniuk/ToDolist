@@ -13,4 +13,6 @@
     
     <!-- dialog fragment -->
     <string name="category_name">Name:</string>
+    <string name="category_add">Add category</string>
+    <string name="category_exists">Category with this name already exists</string>
 </resources>

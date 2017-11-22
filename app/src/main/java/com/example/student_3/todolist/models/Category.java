@@ -1,5 +1,6 @@
 package com.example.student_3.todolist.models;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -16,7 +17,9 @@ public class Category implements Parcelable, DefaultCategory{
 
     public Category(String name){
         this.name = name;
-        this.color = new Random().nextInt(256*256*256);
+        Random random = new Random();
+        this.color = Color.argb(255, random.nextInt(256), random.nextInt(256),
+                random.nextInt(256));
     }
 
     protected Category(Parcel in){

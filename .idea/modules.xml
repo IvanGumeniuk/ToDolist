@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ToDolist.iml" filepath="$PROJECT_DIR$/ToDolist.iml" />
-      <module fileurl="file://E:\Android\MobyDevProjects\ToDolist\ToDolist.iml" filepath="E:\Android\MobyDevProjects\ToDolist\ToDolist.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\Android\MobyDevProjects\ToDolist\app\app.iml" filepath="E:\Android\MobyDevProjects\ToDolist\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -3,6 +3,7 @@ package com.example.student_3.todolist.data;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.example.student_3.todolist.models.Category;
 import com.example.student_3.todolist.models.Task;
 
 import java.util.ArrayList;
@@ -33,5 +34,15 @@ public class StaticDataSource implements IDataSource {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public ArrayList<Category> getCategoryList() {
+        return null;
+    }
+
+    @Override
+    public boolean createCategory(@NonNull Category category) {
+        return false;
     }
 }

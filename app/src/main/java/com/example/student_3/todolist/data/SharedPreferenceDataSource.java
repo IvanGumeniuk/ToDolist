@@ -45,7 +45,7 @@ public class SharedPreferenceDataSource implements IDataSource {
 
         if(!TextUtils.isEmpty(jsonCategories)) {
             Type typeCategories = new TypeToken<ArrayList<Category>>() {}.getType();
-            categories = gson.fromJson(jsonTasks, typeCategories);
+            categories = gson.fromJson(jsonCategories, typeCategories);
         } else {
             categories = new ArrayList<>();
             createCategory(new Category(DefaultCategory.defaultCategoryFirst));
@@ -76,6 +76,11 @@ public class SharedPreferenceDataSource implements IDataSource {
 
     @Override
     public boolean createCategory(@NonNull Category category) {
+        for(Category existingCategory : categories){
+            if(category.getName().toLowerCase().equals(existingCategory.getName().toLowerCase())){
+                return false;
+            }
+        }
         categories.add(category);
         editor = sharedPreferences.edit();
         editor.putString(CATEGORIES, gson.toJson(categories));
