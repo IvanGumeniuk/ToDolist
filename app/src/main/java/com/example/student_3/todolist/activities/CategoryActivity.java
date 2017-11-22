@@ -1,17 +1,21 @@
 package com.example.student_3.todolist.activities;
 
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.student_3.todolist.ActivityRequest;
+import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.CategoryAdapter;
 import com.example.student_3.todolist.data.IDataSource;
@@ -107,6 +111,15 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public void onClick(Category category) {
-        Toast.makeText(this, "asd", Toast.LENGTH_SHORT).show();
+        if(getIntent().getStringExtra("key")!= null &&
+                getIntent().getStringExtra("key").equals(ActivityRequest.GET_CATEGORY.name())) {
+            //Toast.makeText(this, category.getName(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra("category", category.getName());
+            setResult(RESULT_OK, intent);
+            finish();
+        }
+
+        //Toast.makeText(this, category.getName(), Toast.LENGTH_SHORT).show();
     }
 }

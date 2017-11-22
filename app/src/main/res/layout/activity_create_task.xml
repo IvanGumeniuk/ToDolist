@@ -49,13 +49,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:onClick="showDatePickerDialog"
-        style="@style/ItemLayoutRed">
+        android:onClick="openCategoryActivity"
+        style="@style/ItemLayout">
 
         <TextView
             android:id="@+id/categoryTextView"
-            android:drawableStart="@drawable/ic_today_black_24dp"
             tools:text="My Category"
+            android:hint="Choose category"
             style="@style/categoryTextView.White.Large" />
         <View style="@style/Divider" />
     </LinearLayout>
