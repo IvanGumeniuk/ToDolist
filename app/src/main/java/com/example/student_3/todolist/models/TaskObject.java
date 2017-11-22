@@ -49,6 +49,7 @@ public class TaskObject implements Parcelable{
 
     private String description;
     private TaskStatus status;
+    private Category category;
 
     public TaskObject(){
         status = TaskStatus.NEW;
@@ -72,6 +73,14 @@ public class TaskObject implements Parcelable{
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
 

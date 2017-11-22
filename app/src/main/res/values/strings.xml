@@ -10,4 +10,7 @@
     <!-- Main Activity -->
     <string name="linear_layout">Linear layout</string>
     <string name="grid_layout">Grid layout</string>
+    
+    <!-- dialog fragment -->
+    <string name="category_name">Name:</string>
 </resources>
