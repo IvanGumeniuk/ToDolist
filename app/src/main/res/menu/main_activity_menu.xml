@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/item_change_layout"
-        android:title="@string/linear_layout"
-        app:showAsAction="always" />
+        android:title="@string/linear_layout" />
+    <item
+        android:id="@+id/go_to_category_activity"
+        android:title="Go to category"
+        />
 </menu>
