@@ -20,7 +20,6 @@ import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
 import com.example.student_3.todolist.models.Task;
-import com.example.student_3.todolist.adapters.TaskAdapter;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.decorators.GridSpacingItemDecoration;
@@ -99,10 +98,14 @@ public class MainActivity extends AppCompatActivity {
                 gridLayout  = !gridLayout;
                 item.setTitle(gridLayout ? R.string.linear_layout : R.string.grid_layout);
                 setLayoutForRecyclerView();
-                return true;
+                break;
+            case R.id.go_to_category_activity:
+                startActivity(new Intent(this, CategoryActivity.class));
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
