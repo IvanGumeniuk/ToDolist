@@ -60,9 +60,8 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     }
 
     public void openCategoryActivity(View v){
-        Intent intent = new Intent(CreateTaskActivity.this, CategoryActivity.class);
-     //   intent.putExtra("key", ActivityRequest.GET_CATEGORY.name());
-        startActivityForResult(intent, ActivityRequest.GET_CATEGORY.ordinal());
+        startActivityForResult(CategoryActivity.launchInEditMode(this),
+                ActivityRequest.GET_CATEGORY.ordinal());
     }
 
     @Override

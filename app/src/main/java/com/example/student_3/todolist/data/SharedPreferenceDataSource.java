@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.example.student_3.todolist.models.Category;
@@ -24,6 +25,7 @@ public class SharedPreferenceDataSource implements IDataSource {
 
     private final static String TASKS = "tasks";
     private final static String CATEGORIES = "categories";
+    private final static String MAX_ID_CATEGORY = "max_id_for_category";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -36,24 +38,63 @@ public class SharedPreferenceDataSource implements IDataSource {
         gson = new Gson();
         String jsonTasks = sharedPreferences.getString(TASKS, null);
         String jsonCategories = sharedPreferences.getString(CATEGORIES, null);
-        if(!TextUtils.isEmpty(jsonTasks)) {
-            Type typeTask = new TypeToken<ArrayList<Task>>() {}.getType();
-            tasks = gson.fromJson(jsonTasks, typeTask);
-        } else {
-            tasks = new ArrayList<>();
-        }
 
         if(!TextUtils.isEmpty(jsonCategories)) {
             Type typeCategories = new TypeToken<ArrayList<Category>>() {}.getType();
             categories = gson.fromJson(jsonCategories, typeCategories);
         } else {
             categories = new ArrayList<>();
-            createCategory(new Category(DefaultCategory.defaultCategoryFirst));
-            createCategory(new Category(DefaultCategory.defaultCategorySecond));
-            createCategory(new Category(DefaultCategory.defaultCategoryThird));
-            createCategory(new Category(DefaultCategory.defaultCategoryFourth));
-            createCategory(new Category(DefaultCategory.defaultCategoryFifth));
+            createCategory(new Category(DefaultCategory.defaultCategoryFirst, getIdForCategory()));
+            createCategory(new Category(DefaultCategory.defaultCategorySecond, getIdForCategory()));
+            createCategory(new Category(DefaultCategory.defaultCategoryThird, getIdForCategory()));
+            createCategory(new Category(DefaultCategory.defaultCategoryFourth, getIdForCategory()));
+            createCategory(new Category(DefaultCategory.defaultCategoryFifth, getIdForCategory()));
         }
+
+        if(!TextUtils.isEmpty(jsonTasks)) {
+            Type typeTask = new TypeToken<ArrayList<Task>>() {}.getType();
+            tasks = gson.fromJson(jsonTasks, typeTask);
+            for (Task task : tasks){
+                checkAndUpdateCategory(task);
+            }
+        } else {
+            tasks = new ArrayList<>();
+        }
+    }
+
+    private void checkAndUpdateCategory(Task task){
+        Category category = getCategoryById(task.getCategory().getId());
+        if(!task.getCategory().equals(category)){
+            task.setCategory(category);
+        }
+    }
+
+    @Override
+    public boolean isNameFreeForCategory(String name) {
+        for(Category existingCategory : categories){
+            if(name.equalsIgnoreCase(existingCategory.getName())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Category getCategoryById(int id) {
+        for (Category category : categories){
+            if(category.getId() == id){
+                return category;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getIdForCategory() {
+        int id = sharedPreferences.getInt(MAX_ID_CATEGORY, 0);
+        sharedPreferences.edit().putInt(MAX_ID_CATEGORY, ++id).commit();
+        return id;
     }
 
     @Override
@@ -76,11 +117,6 @@ public class SharedPreferenceDataSource implements IDataSource {
 
     @Override
     public boolean createCategory(@NonNull Category category) {
-        for(Category existingCategory : categories){
-            if(category.getName().toLowerCase().equals(existingCategory.getName().toLowerCase())){
-                return false;
-            }
-        }
         categories.add(category);
         editor = sharedPreferences.edit();
         editor.putString(CATEGORIES, gson.toJson(categories));

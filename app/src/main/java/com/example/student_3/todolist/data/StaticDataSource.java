@@ -2,6 +2,7 @@ package com.example.student_3.todolist.data;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.student_3.todolist.models.Category;
 import com.example.student_3.todolist.models.Task;
@@ -45,5 +46,21 @@ public class StaticDataSource implements IDataSource {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public int getIdForCategory() {
+        return 0;
+    }
+
+    @Nullable
+    @Override
+    public Category getCategoryById(int id) {
+        return null;
+    }
+
+    @Override
+    public boolean isNameFreeForCategory(String name) {
+        return false;
     }
 }

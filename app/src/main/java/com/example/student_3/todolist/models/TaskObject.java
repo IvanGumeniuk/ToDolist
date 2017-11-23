@@ -23,11 +23,6 @@ public class TaskObject implements Parcelable{
         public Task[] newArray(int size) {
             return new Task[0];
         }
-
-        //        @Override
-//        public Task[] new Array(int size){
-//            return new Task[size];
-//        }
     };
 
     @Override
