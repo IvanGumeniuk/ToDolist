@@ -48,6 +48,7 @@
         <View style="@style/Divider" />
     </LinearLayout>
 
+    <!--
     <LinearLayout
         android:onClick="openCategoryActivity"
         style="@style/ItemLayout">
@@ -59,4 +60,18 @@
             style="@style/categoryTextView.White.Large" />
         <View style="@style/Divider" />
     </LinearLayout>
+    -->
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/categoryWrapper"
+        android:onClick="openCategoryActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space16">
+        <TextView
+            android:id="@+id/categoryTextView"
+            tools:text="My Category"
+            android:hint="@string/choose_category"
+            style="@style/categoryTextView.White.Large" />
+    </android.support.design.widget.TextInputLayout>
 </LinearLayout>

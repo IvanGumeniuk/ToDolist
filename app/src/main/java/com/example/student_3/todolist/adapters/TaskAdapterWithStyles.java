@@ -1,5 +1,6 @@
 package com.example.student_3.todolist.adapters;
 
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +8,7 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.models.Task;
@@ -19,6 +21,8 @@ import java.util.List;
  */
 
 public class TaskAdapterWithStyles extends RecyclerView.Adapter<TaskAdapterWithStyles.TaskViewHolder>{
+
+    private final int CATEGORY_NAME_LENGTH_MAX = 10;
 
     private List<Task> tasks;
 
@@ -55,16 +59,26 @@ public class TaskAdapterWithStyles extends RecyclerView.Adapter<TaskAdapterWithS
     class TaskViewHolder extends RecyclerView.ViewHolder{
         TaskTextView name;
         TaskTextView description;
+        TextView category;
 
         public TaskViewHolder(View itemView){
             super(itemView);
             name = (TaskTextView) itemView.findViewById(R.id.nameTextView);
             description = (TaskTextView) itemView.findViewById(R.id.descriptionTextView);
+            category = (TextView) itemView.findViewById(R.id.taskCategoryTextView);
         }
 
         public void bind(Task task){
             name.setText(task.getName());
             description.setText(task.getDescription());
+            if(task.getCategory().getName().length() > CATEGORY_NAME_LENGTH_MAX){
+                category.setText(String.format("%s...",task.getCategory().getName().substring(0,
+                        CATEGORY_NAME_LENGTH_MAX)));
+            } else {
+                category.setText(task.getCategory().getName());
+            }
+            category.setTextColor(task.getCategory().getColor());
+            ((GradientDrawable)category.getBackground()).setStroke(8, task.getCategory().getColor());
         }
     }
 }

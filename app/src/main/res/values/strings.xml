@@ -6,6 +6,8 @@
     <string name="task_description">Task Description</string>
     <string name="save">Save</string>
     <string name="save_task">Save Task</string>
+    <string name="choose_category">Choose category</string>
+    <string name="no_category_chosen">You have to choose a category</string>
 
     <!-- Main Activity -->
     <string name="linear_layout">Linear layout</string>

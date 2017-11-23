@@ -26,6 +26,8 @@ import java.util.Date;
 
 public class CreateTaskActivity extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener {
 
+    public final static String SHORT_COMPONENT_NAME = ".activities.CreateTaskActivity";
+
     private Task task;
     private TextInputLayout nameWrapper;
     private EditText nameEditText;
@@ -33,7 +35,9 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     private EditText descriptionEditText;
     private Validator stringValidator;
     private TextView dateTextView;
+    private TextInputLayout categoryWrapper;
     private TextView categoryTextView;
+    private Category currentCategory;
 
 
     @Override
@@ -66,11 +70,17 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data == null) {
-            Toast.makeText(this, "Wrong category", Toast.LENGTH_SHORT).show();
-        }else{
-            String categoryTitle = data.getStringExtra("category");
-            categoryTextView.setText(categoryTitle);
+        switch (ActivityRequest.values()[requestCode]){
+            case GET_CATEGORY:
+                if(resultCode == Activity.RESULT_OK){
+                    currentCategory = data.getParcelableExtra(BundleKey.CATEGORY.name());
+                    if (currentCategory != null) {
+                        task.setCategory(currentCategory);
+                        categoryTextView.setText(currentCategory.getName());
+                        categoryTextView.setTextColor(currentCategory.getColor());
+                    }
+                }
+                break;
         }
     }
 
@@ -86,6 +96,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
         descriptionWrapper = (TextInputLayout) findViewById(R.id.descriptionWrapper);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
+        categoryWrapper = (TextInputLayout) findViewById(R.id.categoryWrapper);
         categoryTextView = (TextView) findViewById(R.id.categoryTextView);
     }
 
@@ -99,12 +110,23 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
         task.setDescription(descriptionEditText.getText().toString());
     }
 
-    private boolean validate(TextInputLayout wrapper){
+    private boolean validateText(TextInputLayout wrapper){
         wrapper.setErrorEnabled(false);
         boolean result = stringValidator.validate(wrapper.getEditText().getText().toString(), wrapper.getHint().toString());
         if (!result) {
             wrapper.setErrorEnabled(true);
             wrapper.setError(stringValidator.getLastMessage());
+        }
+        return result;
+    }
+
+    private boolean validate(){
+        boolean result = validateText(nameWrapper) & validateText(descriptionWrapper);
+        categoryWrapper.setErrorEnabled(false);
+        if(currentCategory == null){
+            categoryWrapper.setErrorEnabled(true);
+            categoryWrapper.setError(getString(R.string.no_category_chosen));
+            result = false;
         }
         return result;
     }
@@ -120,7 +142,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.item_save:
-                if(validate(nameWrapper) && validate(descriptionWrapper)) {
+                if(validate()) {
                     saveTask();
                 }
                 return true;

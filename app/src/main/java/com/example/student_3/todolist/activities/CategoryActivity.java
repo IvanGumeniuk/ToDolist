@@ -42,6 +42,7 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         setContentView(R.layout.activity_category);
         dataSource = new SharedPreferenceDataSource(this);
         categories = dataSource.getCategoryList();
+        initCategoryAdapter();
         initCategoryRecycler();
     }
 
@@ -51,8 +52,19 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
                 LinearLayoutManager.VERTICAL, false));
         categoryRecyclerView.addItemDecoration(new DividerItemDecoration(this,
                 DividerItemDecoration.VERTICAL));
-        categoryAdapter = new CategoryAdapter(categories, this);
         categoryRecyclerView.setAdapter(categoryAdapter);
+    }
+
+    private void initCategoryAdapter(){
+        if(getCallingActivity() != null) {
+            if (getCallingActivity().getShortClassName().equals(CreateTaskActivity.SHORT_COMPONENT_NAME)) {
+                categoryAdapter = new CategoryAdapter(categories, this);
+            } else {
+                categoryAdapter = new CategoryAdapter(categories);
+            }
+        } else {
+            categoryAdapter = new CategoryAdapter(categories);
+        }
     }
 
     @Override
@@ -111,15 +123,9 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public void onClick(Category category) {
-        if(getIntent().getStringExtra("key")!= null &&
-                getIntent().getStringExtra("key").equals(ActivityRequest.GET_CATEGORY.name())) {
-            //Toast.makeText(this, category.getName(), Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent();
-            intent.putExtra("category", category.getName());
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-
-        //Toast.makeText(this, category.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent();
+        intent.putExtra(BundleKey.CATEGORY.name(), category);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }
