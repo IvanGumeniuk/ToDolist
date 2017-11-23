@@ -26,8 +26,6 @@ import java.util.Date;
 
 public class CreateTaskActivity extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener {
 
-    public final static String SHORT_COMPONENT_NAME = ".activities.CreateTaskActivity";
-
     private Task task;
     private TextInputLayout nameWrapper;
     private EditText nameEditText;

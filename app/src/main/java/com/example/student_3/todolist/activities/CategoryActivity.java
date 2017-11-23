@@ -57,7 +57,7 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
 
     private void initCategoryAdapter(){
         if(getCallingActivity() != null) {
-            if (getCallingActivity().getShortClassName().equals(CreateTaskActivity.SHORT_COMPONENT_NAME)) {
+            if (getCallingActivity().getClassName().equals(CreateTaskActivity.class.getName())) {
                 categoryAdapter = new CategoryAdapter(categories, this);
             } else {
                 categoryAdapter = new CategoryAdapter(categories);
