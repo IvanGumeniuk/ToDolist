@@ -74,9 +74,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         CategoryViewHolder(View view){
             super(view);
             categoryName = view.findViewById(R.id.categoryName);
-            if(clickListener != null){
                 view.setOnClickListener(this);
-            }
         }
 
         void bind(Category category){
@@ -87,7 +85,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         @Override
         public void onClick(View view) {
-            clickListener.onClick(category);
+            if(clickListener != null) {
+                clickListener.onClick(category);
+            }
         }
     }
 }
