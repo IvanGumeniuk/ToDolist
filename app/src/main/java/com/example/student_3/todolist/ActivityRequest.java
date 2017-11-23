@@ -5,5 +5,6 @@ package com.example.student_3.todolist;
  */
 
 public enum ActivityRequest {
-    CREATE_TASK
+    CREATE_TASK,
+    GET_CATEGORY
 }

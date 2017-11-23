@@ -14,9 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.dialogs.DatePickerFragment;
+import com.example.student_3.todolist.models.Category;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.validators.Validator;
 
@@ -31,6 +33,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     private EditText descriptionEditText;
     private Validator stringValidator;
     private TextView dateTextView;
+    private TextView categoryTextView;
 
 
     @Override
@@ -54,6 +57,23 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    public void openCategoryActivity(View v){
+        Intent intent = new Intent(CreateTaskActivity.this, CategoryActivity.class);
+        intent.putExtra("key", ActivityRequest.GET_CATEGORY.name());
+        startActivityForResult(intent, ActivityRequest.GET_CATEGORY.ordinal());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(data == null) {
+            Toast.makeText(this, "Wrong category", Toast.LENGTH_SHORT).show();
+        }else{
+            String categoryTitle = data.getStringExtra("category");
+            categoryTextView.setText(categoryTitle);
+        }
+    }
+
     @Override
     public void onDateSelected(Date date) {
         task.setExpireDate(date);
@@ -66,6 +86,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
         descriptionWrapper = (TextInputLayout) findViewById(R.id.descriptionWrapper);
         descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
         dateTextView = (TextView) findViewById(R.id.dateTextView);
+        categoryTextView = (TextView) findViewById(R.id.categoryTextView);
     }
 
     private void setData(){

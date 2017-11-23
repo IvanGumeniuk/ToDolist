@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class StaticDataSource implements IDataSource {
 
     private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static final ArrayList<Category> categories = new ArrayList<>();
 
     @Override
     public ArrayList<Task> getTaskList() {
@@ -22,8 +23,18 @@ public class StaticDataSource implements IDataSource {
     }
 
     @Override
+    public ArrayList<Category> getCategoryList() {
+        return categories;
+    }
+
+    @Override
     public boolean createTask(@NonNull Task task) {
         return tasks.add(task);
+    }
+
+    @Override
+    public boolean createCategory(@NonNull Category category) {
+        return categories.add(category);
     }
 
     @Override
@@ -34,15 +45,5 @@ public class StaticDataSource implements IDataSource {
             result = true;
         }
         return result;
-    }
-
-    @Override
-    public ArrayList<Category> getCategoryList() {
-        return null;
-    }
-
-    @Override
-    public boolean createCategory(@NonNull Category category) {
-        return false;
     }
 }
