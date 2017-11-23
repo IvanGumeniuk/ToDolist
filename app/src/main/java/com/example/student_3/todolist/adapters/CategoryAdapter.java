@@ -23,6 +23,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private List<Category> allCategories;
     private List<Category> searchedCategories;
     private OnCategoryClickListener clickListener;
+    private String currentText;
 
     public CategoryAdapter(@NonNull List<Category> categories){
         super();
@@ -53,10 +54,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     public void filter(String text){
+        currentText = text;
+        updateFilter();
+    }
+
+    public void updateFilter() {
         searchedCategories.clear();
-        if(text.length() > 0){
+        if(currentText.length() > 0){
             for (Category category : allCategories) {
-                if(category.getName().toLowerCase().startsWith(text.toLowerCase())){
+                if(category.getName().toLowerCase().startsWith(currentText.toLowerCase())){
                     searchedCategories.add(category);
                 }
             }
@@ -74,9 +80,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         CategoryViewHolder(View view){
             super(view);
             categoryName = view.findViewById(R.id.categoryName);
-            if(clickListener != null){
-                view.setOnClickListener(this);
-            }
+            view.setOnClickListener(this);
         }
 
         void bind(Category category){
@@ -87,7 +91,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         @Override
         public void onClick(View view) {
-            clickListener.onClick(category);
+            if(clickListener != null) {
+                clickListener.onClick(category);
+            }
         }
     }
 }

@@ -6,5 +6,7 @@ package com.example.student_3.todolist;
 
 public enum BundleKey {
     TASK,
-    CATEGORY
+    CATEGORY,
+    EDIT_MODE,
+    CREATE_CATEGORY
 }

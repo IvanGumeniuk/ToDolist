@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
             gridLayout = savedInstanceState.getBoolean(GRID_LAYOUT, true);
         }
         initCreateTaskButton();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         dataSource = new SharedPreferenceDataSource(this);
         initTaskRecycler();
     }
