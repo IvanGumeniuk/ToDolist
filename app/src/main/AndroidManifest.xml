@@ -17,7 +17,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.CreateTaskActivity" />
-        <activity android:name=".activities.CategoryActivity"></activity>
+        <activity android:name=".activities.CategoryActivity" />
+        <activity
+            android:name=".activities.TaskActivity"
+            android:label="@string/title_activity_task"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.student_3.todolist.activities.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

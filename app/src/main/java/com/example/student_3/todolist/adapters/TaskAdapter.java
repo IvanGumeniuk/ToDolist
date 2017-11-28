@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.models.Task;
@@ -56,7 +55,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
         public TaskViewHolder(View itemView){
             super(itemView);
-            name = (TaskTextView) itemView.findViewById(R.id.nameTextView);
+            name = (TaskTextView) itemView.findViewById(R.id.toolbar);
             description = (TaskTextView) itemView.findViewById(R.id.descriptionTextView);
         }
 
