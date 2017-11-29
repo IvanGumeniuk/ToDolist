@@ -12,9 +12,21 @@
     <!-- Main Activity -->
     <string name="linear_layout">Linear layout</string>
     <string name="grid_layout">Grid layout</string>
-    
+
     <!-- dialog fragment -->
     <string name="category_name">Name:</string>
     <string name="category_add">Add category</string>
     <string name="category_exists">Category with this name already exists</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="enter_your_pin">Enter your pin</string>
+    <string name="next">Next</string>
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="enter_your_name">Enter your name</string>
+    <string name="welcome">Welcome</string>
 </resources>

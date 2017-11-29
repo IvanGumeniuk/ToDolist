@@ -1,20 +1,16 @@
 package com.example.student_3.todolist.activities;
 
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.CategoryAdapter;
@@ -26,8 +22,8 @@ import com.example.student_3.todolist.models.Category;
 
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener,
-        OnCategoryClickListener{
+public class CategoryActivity extends BaseActivity implements SearchView.OnQueryTextListener,
+        OnCategoryClickListener {
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
@@ -55,8 +51,8 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         categoryRecyclerView.setAdapter(categoryAdapter);
     }
 
-    private void initCategoryAdapter(){
-        if(getCallingActivity() != null) {
+    private void initCategoryAdapter() {
+        if (getCallingActivity() != null) {
             if (getCallingActivity().getClassName().equals(CreateTaskActivity.class.getName())) {
                 categoryAdapter = new CategoryAdapter(categories, this);
             } else {
@@ -70,7 +66,7 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.category_activity_menu,menu);
+        inflater.inflate(R.menu.category_activity_menu, menu);
         searchItem = menu.findItem(R.id.search_category);
         searchView =
                 (SearchView) MenuItemCompat.getActionView(searchItem);
@@ -80,20 +76,20 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.add_category:
                 addCategory();
                 break;
             case R.id.search_category:
                 break;
             default:
-                 super.onOptionsItemSelected(item);
-                 break;
+                super.onOptionsItemSelected(item);
+                break;
         }
         return true;
     }
 
-    private void addCategory(){
+    private void addCategory() {
         AddCategoryFragment fragment = new AddCategoryFragment();
         fragment.show(getSupportFragmentManager(), "addCategory");
     }
@@ -110,9 +106,9 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         return true;
     }
 
-    public boolean saveCategory(Category category){
+    public boolean saveCategory(Category category) {
         boolean result = dataSource.createCategory(category);
-        if(result){
+        if (result) {
             categoryAdapter.filter("");
             searchView.setQuery("", false);
             searchView.setIconified(true);
@@ -127,5 +123,21 @@ public class CategoryActivity extends AppCompatActivity implements SearchView.On
         intent.putExtra(BundleKey.CATEGORY.name(), category);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

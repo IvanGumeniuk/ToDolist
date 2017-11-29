@@ -3,9 +3,6 @@ package com.example.student_3.todolist.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Student_3 on 02/11/2017.
- */
 
 public class TaskObject implements Parcelable{
     public enum TaskStatus{
@@ -24,10 +21,6 @@ public class TaskObject implements Parcelable{
             return new Task[0];
         }
 
-        //        @Override
-//        public Task[] new Array(int size){
-//            return new Task[size];
-//        }
     };
 
     @Override

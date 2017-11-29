@@ -6,5 +6,6 @@ package com.example.student_3.todolist;
 
 public enum BundleKey {
     TASK,
-    CATEGORY
+    CATEGORY,
+    NEED_CHECK_PASSWORD
 }

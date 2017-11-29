@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
+import com.example.student_3.todolist.Constants;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.dialogs.DatePickerFragment;
 import com.example.student_3.todolist.models.Category;
@@ -24,7 +26,10 @@ import com.example.student_3.todolist.validators.Validator;
 
 import java.util.Date;
 
-public class CreateTaskActivity extends AppCompatActivity implements DatePickerFragment.OnDateSelectedListener {
+public class CreateTaskActivity extends BaseActivity implements DatePickerFragment.OnDateSelectedListener {
+
+   // private long currentTime;
+    //private static boolean  needCheckCurrentTime = true;
 
     private Task task;
     private TextInputLayout nameWrapper;
@@ -60,14 +65,15 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     }
 
     public void openCategoryActivity(View v){
+        setNeedCheckCurrentTime(false);
         Intent intent = new Intent(CreateTaskActivity.this, CategoryActivity.class);
-     //   intent.putExtra("key", ActivityRequest.GET_CATEGORY.name());
         startActivityForResult(intent, ActivityRequest.GET_CATEGORY.ordinal());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("RESULTS", resultCode+"  CREATE_TASK");
         switch (ActivityRequest.values()[requestCode]){
             case GET_CATEGORY:
                 if(resultCode == Activity.RESULT_OK){
@@ -77,6 +83,10 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
                         categoryTextView.setText(currentCategory.getName());
                         categoryTextView.setTextColor(currentCategory.getColor());
                     }
+                }
+                if(resultCode == Activity.RESULT_CANCELED){
+                    setResult(Activity.RESULT_CANCELED);
+                    finish();
                 }
                 break;
         }
@@ -89,13 +99,13 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
     }
 
     private void initUI(){
-        nameWrapper = (TextInputLayout) findViewById(R.id.nameWrapper);
-        nameEditText = (EditText) findViewById(R.id.nameEditText);
-        descriptionWrapper = (TextInputLayout) findViewById(R.id.descriptionWrapper);
-        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
-        dateTextView = (TextView) findViewById(R.id.dateTextView);
-        categoryWrapper = (TextInputLayout) findViewById(R.id.categoryWrapper);
-        categoryTextView = (TextView) findViewById(R.id.categoryTextView);
+        nameWrapper =  findViewById(R.id.nameWrapper);
+        nameEditText =  findViewById(R.id.nameEditText);
+        descriptionWrapper =  findViewById(R.id.descriptionWrapper);
+        descriptionEditText =  findViewById(R.id.descriptionEditText);
+        dateTextView =  findViewById(R.id.dateTextView);
+        categoryWrapper =  findViewById(R.id.categoryWrapper);
+        categoryTextView = findViewById(R.id.categoryTextView);
     }
 
     private void setData(){
@@ -155,5 +165,16 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
         result.putExtra(BundleKey.TASK.name(), task);
         setResult(Activity.RESULT_OK, result);
         finish();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

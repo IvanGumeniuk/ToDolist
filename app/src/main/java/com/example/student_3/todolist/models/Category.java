@@ -10,7 +10,7 @@ import java.util.Random;
  * Created by gromi on 11/22/2017.
  */
 
-public class Category implements Parcelable, DefaultCategory{
+public class Category implements Parcelable{
 
     private String name;
     private int color;

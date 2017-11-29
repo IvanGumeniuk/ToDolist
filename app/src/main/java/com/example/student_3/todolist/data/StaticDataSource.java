@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.example.student_3.todolist.models.Category;
 import com.example.student_3.todolist.models.Task;
+import com.example.student_3.todolist.models.User;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,16 @@ public class StaticDataSource implements IDataSource {
     private static final ArrayList<Category> categories = new ArrayList<>();
 
     @Override
+    public User getCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<User> getUserList() {
+        return null;
+    }
+
+    @Override
     public ArrayList<Task> getTaskList() {
         return tasks;
     }
@@ -28,6 +39,11 @@ public class StaticDataSource implements IDataSource {
     }
 
     @Override
+    public boolean setCurrentUser(@NonNull User user) {
+        return false;
+    }
+
+    @Override
     public boolean createTask(@NonNull Task task) {
         return tasks.add(task);
     }
@@ -35,6 +51,11 @@ public class StaticDataSource implements IDataSource {
     @Override
     public boolean createCategory(@NonNull Category category) {
         return categories.add(category);
+    }
+
+    @Override
+    public boolean addUser(@NonNull User user) {
+        return false;
     }
 
     @Override

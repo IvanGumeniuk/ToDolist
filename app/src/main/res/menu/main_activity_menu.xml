@@ -8,4 +8,8 @@
         android:id="@+id/go_to_category_activity"
         android:title="Go to category"
         />
+    <item
+        android:id="@+id/log_out"
+        android:title="Logout"
+        />
 </menu>

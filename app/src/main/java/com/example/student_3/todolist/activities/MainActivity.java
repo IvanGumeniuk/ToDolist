@@ -3,12 +3,13 @@ package com.example.student_3.todolist.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,14 +18,16 @@ import android.widget.Toast;
 
 import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
+import com.example.student_3.todolist.Constants;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.decorators.GridSpacingItemDecoration;
+import com.example.student_3.todolist.models.User;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private final static String GRID_LAYOUT = "grid layout";
 
@@ -38,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private LinearLayoutManager linearLayoutManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
         }
         initCreateTaskButton();
         dataSource = new SharedPreferenceDataSource(this);
+
         initTaskRecycler();
     }
 
     private void initTaskRecycler(){
-        taskRecyclerView = (RecyclerView) findViewById(R.id.taskRecyclerView);
+        taskRecyclerView = findViewById(R.id.taskRecyclerView);
         setLayoutForRecyclerView();
         taskAdapter = new TaskAdapterWithStyles(dataSource.getTaskList());
         taskRecyclerView.setAdapter(taskAdapter);
@@ -100,7 +105,13 @@ public class MainActivity extends AppCompatActivity {
                 setLayoutForRecyclerView();
                 break;
             case R.id.go_to_category_activity:
-                startActivity(new Intent(this, CategoryActivity.class));
+                setNeedCheckCurrentTime(false);
+                startActivityForResult(new Intent(this, CategoryActivity.class), ActivityRequest.WATCH_CATEGORY.ordinal());
+                break;
+            case R.id.log_out:
+                dataSource.setCurrentUser(new User());
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -117,18 +128,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
+
         int size = dataSource.getTaskList().size();
         Toast.makeText(this, String.format("%d task%s", size, size>0?"s":""), Toast.LENGTH_SHORT).show();
     }
 
     private void initCreateTaskButton(){
-        createTaskButton = (FloatingActionButton) findViewById(R.id.createTaskButton);
+        createTaskButton = findViewById(R.id.createTaskButton);
         createTaskButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Task task = new Task();
                 Intent intent = new Intent(MainActivity.this, CreateTaskActivity.class);
                 intent.putExtra(BundleKey.TASK.name(), task);
+                setNeedCheckCurrentTime(false);
                 startActivityForResult(intent, ActivityRequest.CREATE_TASK.ordinal());
             }
         });
@@ -137,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("RESULTS", resultCode+"  MAIN");
         switch (ActivityRequest.values()[requestCode]){
             case CREATE_TASK:
                 if(resultCode == Activity.RESULT_OK){
@@ -149,5 +163,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
 }
 
