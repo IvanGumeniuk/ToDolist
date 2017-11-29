@@ -2,6 +2,7 @@ package com.example.student_3.todolist.data;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.student_3.todolist.models.Category;
 import com.example.student_3.todolist.models.Task;
@@ -24,4 +25,8 @@ public interface IDataSource {
     boolean createCategory(@NonNull Category category);
     boolean addUser(@NonNull User user);
     boolean updateTask(@NonNull Task task, @IntRange(from = 0, to = Integer.MAX_VALUE) int index);
+    int getIdForCategory();
+    @Nullable
+    Category getCategoryById(int id);
+    boolean isNameFreeForCategory(String name);
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.example.student_3.todolist.models.Category;
@@ -17,6 +18,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+/**
+ * Created by Student_3 on 14/11/2017.
+ */
 
 public class SharedPreferenceDataSource implements IDataSource {
 
@@ -24,6 +28,7 @@ public class SharedPreferenceDataSource implements IDataSource {
     private final static String CATEGORIES = "categories";
     private final static String USERS = "users";
     private final static String CURRENT = "current";
+    private final static String MAX_ID_CATEGORY = "max_id_for_category";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -52,29 +57,40 @@ public class SharedPreferenceDataSource implements IDataSource {
 
             String jsonTasks = sharedPreferences.getString(currentUser.getEmail(), null);
             if (!TextUtils.isEmpty(jsonTasks)) {
-                Type typeTask = new TypeToken<ArrayList<Task>>() {}.getType();
+                Type typeTask = new TypeToken<ArrayList<Task>>() {
+                }.getType();
                 tasks = gson.fromJson(jsonTasks, typeTask);
+                for (Task task : tasks) {
+                    checkAndUpdateCategory(task);
+                }
                 currentUser.setTasks(tasks);
             } else {
-//                tasks = new ArrayList<>();
                 currentUser.setTasks(new ArrayList<Task>());
             }
 
-            String jsonCategories = sharedPreferences.getString(currentUser.getEmail()+CATEGORIES, null);
+            String jsonCategories = sharedPreferences.getString(currentUser.getEmail() + CATEGORIES, null);
             if (!TextUtils.isEmpty(jsonCategories)) {
-                Type typeCategories = new TypeToken<ArrayList<Category>>() {}.getType();
+                Type typeCategories = new TypeToken<ArrayList<Category>>() {
+                }.getType();
                 categories = gson.fromJson(jsonCategories, typeCategories);
                 currentUser.setCategories(categories);
             } else {
                 categories = new ArrayList<>();
-                createCategory(new Category(DefaultCategory.defaultCategoryFirst));
-                createCategory(new Category(DefaultCategory.defaultCategorySecond));
-                createCategory(new Category(DefaultCategory.defaultCategoryThird));
-                createCategory(new Category(DefaultCategory.defaultCategoryFourth));
-                createCategory(new Category(DefaultCategory.defaultCategoryFifth));
+                createCategory(new Category(DefaultCategory.defaultCategoryFirst, getIdForCategory()));
+                createCategory(new Category(DefaultCategory.defaultCategorySecond, getIdForCategory()));
+                createCategory(new Category(DefaultCategory.defaultCategoryThird, getIdForCategory()));
+                createCategory(new Category(DefaultCategory.defaultCategoryFourth, getIdForCategory()));
+                createCategory(new Category(DefaultCategory.defaultCategoryFifth, getIdForCategory()));
 
                 currentUser.setCategories(categories);
             }
+        }
+    }
+
+    private void checkAndUpdateCategory(Task task){
+        Category category = getCategoryById(task.getCategory().getId());
+        if(!task.getCategory().equals(category)){
+            task.setCategory(category);
         }
     }
 
@@ -86,6 +102,34 @@ public class SharedPreferenceDataSource implements IDataSource {
     @Override
     public ArrayList<User> getUserList() {
         return users;
+    }
+
+    @Override
+    public boolean isNameFreeForCategory(String name) {
+        for(Category existingCategory : categories){
+            if(name.equalsIgnoreCase(existingCategory.getName())){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Category getCategoryById(int id) {
+        for (Category category : categories){
+            if(category.getId() == id){
+                return category;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public int getIdForCategory() {
+        int id = sharedPreferences.getInt(MAX_ID_CATEGORY, 0);
+        sharedPreferences.edit().putInt(MAX_ID_CATEGORY, ++id).commit();
+        return id;
     }
 
     @Override

@@ -50,6 +50,11 @@ public class MainActivity extends BaseActivity {
             gridLayout = savedInstanceState.getBoolean(GRID_LAYOUT, true);
         }
         initCreateTaskButton();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         dataSource = new SharedPreferenceDataSource(this);
 
         initTaskRecycler();

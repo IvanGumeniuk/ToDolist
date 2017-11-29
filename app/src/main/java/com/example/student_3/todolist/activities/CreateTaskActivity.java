@@ -28,8 +28,6 @@ import java.util.Date;
 
 public class CreateTaskActivity extends BaseActivity implements DatePickerFragment.OnDateSelectedListener {
 
-   // private long currentTime;
-    //private static boolean  needCheckCurrentTime = true;
 
     private Task task;
     private TextInputLayout nameWrapper;
@@ -66,14 +64,13 @@ public class CreateTaskActivity extends BaseActivity implements DatePickerFragme
 
     public void openCategoryActivity(View v){
         setNeedCheckCurrentTime(false);
-        Intent intent = new Intent(CreateTaskActivity.this, CategoryActivity.class);
-        startActivityForResult(intent, ActivityRequest.GET_CATEGORY.ordinal());
+        startActivityForResult(CategoryActivity.launchInEditMode(this),
+                ActivityRequest.GET_CATEGORY.ordinal());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("RESULTS", resultCode+"  CREATE_TASK");
         switch (ActivityRequest.values()[requestCode]){
             case GET_CATEGORY:
                 if(resultCode == Activity.RESULT_OK){

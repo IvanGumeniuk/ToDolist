@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.activities.CategoryActivity;
 import com.example.student_3.todolist.models.Category;
@@ -25,6 +26,7 @@ public class AddCategoryFragment extends DialogFragment {
     private EditText categoryNameEditText;
     private Button categoryCreateButton;
     private Validator<String> stringValidator;
+
 
     @Nullable
     @Override
@@ -48,12 +50,15 @@ public class AddCategoryFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if(validate(textInputLayout)){
-                    Category category = new Category(textInputLayout.getEditText().getText().toString());
-                    if(((CategoryActivity)getActivity()).saveCategory(category)) {
-                        dismiss();
-                    } else {
-                        textInputLayout.setErrorEnabled(true);
-                        textInputLayout.setError(getString(R.string.category_exists));
+                    boolean createCategory = getArguments().getBoolean(BundleKey.CREATE_CATEGORY.name(), false);
+                    if(createCategory) {
+                        if (((CategoryActivity) getActivity()).saveCategory(textInputLayout.getEditText()
+                                .getText().toString())) {
+                            dismiss();
+                        } else {
+                            textInputLayout.setErrorEnabled(true);
+                            textInputLayout.setError(getString(R.string.category_exists));
+                        }
                     }
                 }
             }

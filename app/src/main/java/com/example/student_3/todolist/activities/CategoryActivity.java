@@ -1,5 +1,6 @@
 package com.example.student_3.todolist.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -25,12 +26,26 @@ import java.util.List;
 public class CategoryActivity extends BaseActivity implements SearchView.OnQueryTextListener,
         OnCategoryClickListener {
 
+    public static Intent launchInEditMode(Context context){
+        Intent intent = new Intent(context, CategoryActivity.class);
+        intent.putExtra(BundleKey.EDIT_MODE.name(), true);
+        return intent;
+    }
+
+    public static Intent launch(Context context){
+        Intent intent = new Intent(context, CategoryActivity.class);
+        return intent;
+    }
+
+    private static final String CURRENT_FILTER = "currentFilter";
+
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
     private List<Category> categories;
     private IDataSource dataSource;
     private MenuItem searchItem;
     private SearchView searchView;
+    private String currentFilterText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +57,22 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
         initCategoryRecycler();
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState != null){
+            currentFilterText = savedInstanceState.getString(CURRENT_FILTER);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(currentFilterText != null){
+            outState.putString(CURRENT_FILTER, currentFilterText);
+        }
+    }
+
     private void initCategoryRecycler() {
         categoryRecyclerView = (RecyclerView) findViewById(R.id.categoryRecyclerView);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this,
@@ -51,9 +82,10 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
         categoryRecyclerView.setAdapter(categoryAdapter);
     }
 
-    private void initCategoryAdapter() {
-        if (getCallingActivity() != null) {
-            if (getCallingActivity().getClassName().equals(CreateTaskActivity.class.getName())) {
+    private void initCategoryAdapter(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            if(bundle.getBoolean(BundleKey.EDIT_MODE.name(), false)){
                 categoryAdapter = new CategoryAdapter(categories, this);
             } else {
                 categoryAdapter = new CategoryAdapter(categories);
@@ -71,6 +103,12 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
         searchView =
                 (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
+        if(currentFilterText != null){
+            searchItem.expandActionView();
+            searchView.setIconified(false);
+            searchView.setQuery(currentFilterText, true);
+            searchView.clearFocus();
+        }
         return true;
     }
 
@@ -91,28 +129,31 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
 
     private void addCategory() {
         AddCategoryFragment fragment = new AddCategoryFragment();
+        Bundle arguments = new Bundle();
+        arguments.putBoolean(BundleKey.CREATE_CATEGORY.name(), true);
+        fragment.setArguments(arguments);
         fragment.show(getSupportFragmentManager(), "addCategory");
     }
 
     @Override
     public boolean onQueryTextSubmit(String s) {
+        currentFilterText = s;
         categoryAdapter.filter(s);
         return true;
     }
 
     @Override
     public boolean onQueryTextChange(String s) {
+        currentFilterText = s;
         categoryAdapter.filter(s);
         return true;
     }
 
-    public boolean saveCategory(Category category) {
-        boolean result = dataSource.createCategory(category);
-        if (result) {
-            categoryAdapter.filter("");
-            searchView.setQuery("", false);
-            searchView.setIconified(true);
-            searchItem.collapseActionView();
+    public boolean saveCategory(String categoryName){
+        boolean result = dataSource.isNameFreeForCategory(categoryName);
+        if(result){
+            result = dataSource.createCategory(new Category(categoryName, dataSource.getIdForCategory()));
+            categoryAdapter.updateFilter();
         }
         return result;
     }
