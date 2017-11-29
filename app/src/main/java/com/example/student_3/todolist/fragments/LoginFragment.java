@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.student_3.todolist.R;
@@ -109,7 +108,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Tex
                 +numbThree.getText().toString()+numbFour.getText().toString();
 
         LoginActivity activity = (LoginActivity) getActivity();
-        ArrayList<User> users = activity.getUsers();
+        ArrayList<User> users = activity.getUsersFromData();
 
         for(int i=0; i<users.size();i++){
             if(users.get(i).getEmail().equals(userEmail) && users.get(i).getPin().equals(userPass)){

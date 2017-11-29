@@ -87,7 +87,7 @@ public class UserEmailFragment extends Fragment {
 
     private boolean existsSameUserMail(String email){
         LoginActivity activity = (LoginActivity)getActivity();
-        ArrayList<User> users = activity.getUsers();
+        ArrayList<User> users = activity.getUsersFromData();
         boolean result = false;
         for(User user : users){
             if(user.getEmail().equals(email)){

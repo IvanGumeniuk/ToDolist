@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.student_3.todolist.BundleKey;
@@ -76,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ne
         return currentUser;
     }
 
-    public ArrayList<User> getUsers() {
+    public ArrayList<User> getUsersFromData() {
         return dataSource.getUserList();
     }
 
@@ -91,7 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ne
                     .addToBackStack("UserName")
                     .commit();
         } else {
-            dataSource.setCurrentUser(getUsers().get(userCount));
+            dataSource.setCurrentUser(getUsersFromData().get(userCount));
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }

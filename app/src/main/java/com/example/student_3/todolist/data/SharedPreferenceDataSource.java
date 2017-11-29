@@ -55,19 +55,6 @@ public class SharedPreferenceDataSource implements IDataSource {
         if (!TextUtils.isEmpty(jsonCurrentUser)) {
             currentUser = gson.fromJson(jsonCurrentUser, User.class);
 
-            String jsonTasks = sharedPreferences.getString(currentUser.getEmail(), null);
-            if (!TextUtils.isEmpty(jsonTasks)) {
-                Type typeTask = new TypeToken<ArrayList<Task>>() {
-                }.getType();
-                tasks = gson.fromJson(jsonTasks, typeTask);
-                for (Task task : tasks) {
-                    checkAndUpdateCategory(task);
-                }
-                currentUser.setTasks(tasks);
-            } else {
-                currentUser.setTasks(new ArrayList<Task>());
-            }
-
             String jsonCategories = sharedPreferences.getString(currentUser.getEmail() + CATEGORIES, null);
             if (!TextUtils.isEmpty(jsonCategories)) {
                 Type typeCategories = new TypeToken<ArrayList<Category>>() {
@@ -83,6 +70,19 @@ public class SharedPreferenceDataSource implements IDataSource {
                 createCategory(new Category(DefaultCategory.defaultCategoryFifth, getIdForCategory()));
 
                 currentUser.setCategories(categories);
+            }
+
+            String jsonTasks = sharedPreferences.getString(currentUser.getEmail(), null);
+            if (!TextUtils.isEmpty(jsonTasks)) {
+                Type typeTask = new TypeToken<ArrayList<Task>>() {
+                }.getType();
+                tasks = gson.fromJson(jsonTasks, typeTask);
+                for (Task task : tasks) {
+                    checkAndUpdateCategory(task);
+                }
+                currentUser.setTasks(tasks);
+            } else {
+                currentUser.setTasks(new ArrayList<Task>());
             }
         }
     }
@@ -106,7 +106,7 @@ public class SharedPreferenceDataSource implements IDataSource {
 
     @Override
     public boolean isNameFreeForCategory(String name) {
-        for(Category existingCategory : categories){
+        for(Category existingCategory : getCurrentUser().getCategories()){
             if(name.equalsIgnoreCase(existingCategory.getName())){
                 return false;
             }
@@ -117,7 +117,7 @@ public class SharedPreferenceDataSource implements IDataSource {
     @Nullable
     @Override
     public Category getCategoryById(int id) {
-        for (Category category : categories){
+        for (Category category : getCurrentUser().getCategories()){
             if(category.getId() == id){
                 return category;
             }
@@ -159,7 +159,7 @@ public class SharedPreferenceDataSource implements IDataSource {
 
     @Override
     public boolean createCategory(@NonNull Category category) {
-        for (Category existingCategory : categories) {
+        for (Category existingCategory : getCurrentUser().getCategories()) {
             if (category.getName().toLowerCase().equals(existingCategory.getName().toLowerCase())) {
                 return false;
             }
@@ -186,7 +186,7 @@ public class SharedPreferenceDataSource implements IDataSource {
     @Override
     public boolean updateTask(@NonNull Task task, @IntRange(from = 0, to = Integer.MAX_VALUE) int index) {
         boolean result = false;
-        if (index >= 0 && index < tasks.size()) {
+        if (index >= 0 && index < currentUser.getTasks().size()) {
             currentUser.getTasks().set(index, task);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString(currentUser.getEmail(), gson.toJson(currentUser.getTasks()));
