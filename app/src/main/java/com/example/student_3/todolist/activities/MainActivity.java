@@ -2,6 +2,7 @@ package com.example.student_3.todolist.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.Constants;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
+import com.example.student_3.todolist.data.FilesDataSource;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
@@ -50,14 +52,13 @@ public class MainActivity extends BaseActivity {
             gridLayout = savedInstanceState.getBoolean(GRID_LAYOUT, true);
         }
         initCreateTaskButton();
+        dataSource = new SharedPreferenceDataSource(this);
+        initTaskRecycler();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        dataSource = new SharedPreferenceDataSource(this);
-
-        initTaskRecycler();
     }
 
     private void initTaskRecycler(){
@@ -114,6 +115,7 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(new Intent(this, CategoryActivity.class), ActivityRequest.WATCH_CATEGORY.ordinal());
                 break;
             case R.id.log_out:
+                dataSource.saveCurrentUser();
                 dataSource.setCurrentUser(new User());
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
@@ -145,7 +147,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v){
                 Task task = new Task();
                 Intent intent = new Intent(MainActivity.this, CreateTaskActivity.class);
-                intent.putExtra(BundleKey.TASK.name(), task);
+                intent.putExtra(BundleKey.TASK.name(),(Parcelable) task);
                 setNeedCheckCurrentTime(false);
                 startActivityForResult(intent, ActivityRequest.CREATE_TASK.ordinal());
             }
@@ -172,6 +174,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        dataSource.saveCurrentUser();
     }
 
 

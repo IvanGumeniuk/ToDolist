@@ -26,6 +26,7 @@ public interface IDataSource {
     boolean addUser(@NonNull User user);
     boolean updateTask(@NonNull Task task, @IntRange(from = 0, to = Integer.MAX_VALUE) int index);
     int getIdForCategory();
+    void saveCurrentUser();
     @Nullable
     Category getCategoryById(int id);
     boolean isNameFreeForCategory(String name);

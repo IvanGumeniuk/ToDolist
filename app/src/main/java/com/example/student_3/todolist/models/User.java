@@ -4,9 +4,10 @@ package com.example.student_3.todolist.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User implements Parcelable {
+public class User implements Parcelable, Serializable {
     private String name;
     private String email;
     private String pin;

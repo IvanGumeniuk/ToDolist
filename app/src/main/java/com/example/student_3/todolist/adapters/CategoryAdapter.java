@@ -60,7 +60,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     public void updateFilter() {
         searchedCategories.clear();
-        if(currentText.length() > 0){
+        if(currentText != null && currentText.length() > 0){
             for (Category category : allCategories) {
                 if(category.getName().toLowerCase().startsWith(currentText.toLowerCase())){
                     searchedCategories.add(category);

@@ -17,6 +17,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Student_3 on 14/11/2017.
@@ -44,8 +45,7 @@ public class SharedPreferenceDataSource implements IDataSource {
 
         String jsonUsers = sharedPreferences.getString(USERS, null);
         if (!TextUtils.isEmpty(jsonUsers)) {
-            Type typeUser = new TypeToken<ArrayList<User>>() {
-            }.getType();
+            Type typeUser = new TypeToken<ArrayList<User>>() {}.getType();
             users = gson.fromJson(jsonUsers, typeUser);
         } else {
             users = new ArrayList<>();
@@ -69,7 +69,7 @@ public class SharedPreferenceDataSource implements IDataSource {
                 createCategory(new Category(DefaultCategory.defaultCategoryFourth, getIdForCategory()));
                 createCategory(new Category(DefaultCategory.defaultCategoryFifth, getIdForCategory()));
 
-                currentUser.setCategories(categories);
+                currentUser.setCategories(new ArrayList<>(categories));
             }
 
             String jsonTasks = sharedPreferences.getString(currentUser.getEmail(), null);
@@ -193,6 +193,19 @@ public class SharedPreferenceDataSource implements IDataSource {
             result = editor.commit();
         }
         return result;
+    }
+
+    @Override
+    public void saveCurrentUser(){
+        int userNumber = -1;
+        for(int i=0; i<users.size();i++){
+            if(currentUser.getEmail().equals(users.get(i).getEmail())){
+                userNumber = i;
+            }
+        }
+        users.set(userNumber, currentUser);
+        editor = sharedPreferences.edit();
+        editor.putString(USERS, gson.toJson(users)).apply();
     }
 
 }

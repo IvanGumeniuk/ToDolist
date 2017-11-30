@@ -74,6 +74,11 @@ public class StaticDataSource implements IDataSource {
         return 0;
     }
 
+    @Override
+    public void saveCurrentUser() {
+
+    }
+
     @Nullable
     @Override
     public Category getCategoryById(int id) {

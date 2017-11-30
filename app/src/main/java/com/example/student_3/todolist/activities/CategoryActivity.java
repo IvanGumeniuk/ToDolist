@@ -3,6 +3,7 @@ package com.example.student_3.todolist.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.SearchView;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.CategoryAdapter;
+import com.example.student_3.todolist.data.FilesDataSource;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.dialogs.AddCategoryFragment;
@@ -161,7 +163,7 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
     @Override
     public void onClick(Category category) {
         Intent intent = new Intent();
-        intent.putExtra(BundleKey.CATEGORY.name(), category);
+        intent.putExtra(BundleKey.CATEGORY.name(), (Parcelable) category);
         setResult(RESULT_OK, intent);
         finish();
     }

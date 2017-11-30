@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
+import com.example.student_3.todolist.data.FilesDataSource;
+import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.fragments.LoginFragment;
 import com.example.student_3.todolist.fragments.UserEmailFragment;
@@ -26,7 +28,8 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ne
     public static boolean NEED_REFRESH_PIN = true;
 
     private User currentUser;
-    private SharedPreferenceDataSource dataSource;
+    private IDataSource dataSource;
+
     private Intent intent;
 
 
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ne
         }
 
         dataSource = new SharedPreferenceDataSource(this);
+        dataSource.setCurrentUser(new User());
     }
 
 
@@ -91,6 +95,7 @@ public class LoginActivity extends AppCompatActivity implements LoginFragment.Ne
                     .commit();
         } else {
             dataSource.setCurrentUser(getUsersFromData().get(userCount));
+
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }

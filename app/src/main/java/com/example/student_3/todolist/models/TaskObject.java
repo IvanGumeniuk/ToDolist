@@ -3,11 +3,13 @@ package com.example.student_3.todolist.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by Student_3 on 02/11/2017.
  */
 
-public class TaskObject implements Parcelable{
+public class TaskObject implements Parcelable, Serializable{
     public enum TaskStatus{
         NEW,
         DONE

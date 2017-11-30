@@ -1,6 +1,7 @@
 package com.example.student_3.todolist.activities;
 
 import android.app.Activity;
+import android.os.Parcelable;
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
@@ -159,7 +160,7 @@ public class CreateTaskActivity extends BaseActivity implements DatePickerFragme
     private void saveTask(){
         fillData();
         Intent result = new Intent();
-        result.putExtra(BundleKey.TASK.name(), task);
+        result.putExtra(BundleKey.TASK.name(), (Parcelable) task);
         setResult(Activity.RESULT_OK, result);
         finish();
     }
