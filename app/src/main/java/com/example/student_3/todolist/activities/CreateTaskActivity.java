@@ -104,6 +104,7 @@ public class CreateTaskActivity extends AppCompatActivity implements DatePickerF
             categoryTextView.setText(task.getCategory().getName());
             categoryTextView.setTextColor(task.getCategory().getColor());
             dateTextView.setText(task.getExpireDateString());
+            currentCategory = task.getCategory();
         }
     }
 
