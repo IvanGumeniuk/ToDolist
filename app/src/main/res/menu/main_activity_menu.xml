@@ -6,7 +6,7 @@
         android:title="@string/linear_layout" />
     <item
         android:id="@+id/go_to_category_activity"
-        android:title="Go to category"
+        android:title="@string/go_to_category"
         />
     <item
         android:id="@+id/log_out"

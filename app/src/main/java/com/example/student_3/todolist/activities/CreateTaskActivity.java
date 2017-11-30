@@ -109,6 +109,12 @@ public class CreateTaskActivity extends BaseActivity implements DatePickerFragme
     private void setData(){
         nameEditText.setText(task.getName());
         descriptionEditText.setText(task.getDescription());
+        if(task.getCategory() != null) {
+            categoryTextView.setText(task.getCategory().getName());
+            categoryTextView.setTextColor(task.getCategory().getColor());
+            dateTextView.setText(task.getExpireDateString());
+            currentCategory = task.getCategory();
+        }
     }
 
     private void fillData(){

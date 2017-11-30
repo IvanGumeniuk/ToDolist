@@ -16,17 +16,18 @@ import android.widget.SearchView;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.CategoryAdapter;
-import com.example.student_3.todolist.data.FilesDataSource;
+import com.example.student_3.todolist.data.FileDataSource;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.dialogs.AddCategoryFragment;
 import com.example.student_3.todolist.listeners.OnCategoryClickListener;
+import com.example.student_3.todolist.listeners.OnDataChangedListener;
 import com.example.student_3.todolist.models.Category;
 
 import java.util.List;
 
 public class CategoryActivity extends BaseActivity implements SearchView.OnQueryTextListener,
-        OnCategoryClickListener {
+        OnCategoryClickListener, OnDataChangedListener {
 
     public static Intent launchInEditMode(Context context){
         Intent intent = new Intent(context, CategoryActivity.class);
@@ -53,7 +54,7 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
-        dataSource = new SharedPreferenceDataSource(this);
+        dataSource = new FileDataSource(this, this);
         categories = dataSource.getCategoryList();
         initCategoryAdapter();
         initCategoryRecycler();
@@ -72,6 +73,13 @@ public class CategoryActivity extends BaseActivity implements SearchView.OnQuery
         super.onSaveInstanceState(outState);
         if(currentFilterText != null){
             outState.putString(CURRENT_FILTER, currentFilterText);
+        }
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        if(categoryAdapter != null){
+            categoryAdapter.updateFilter();
         }
     }
 

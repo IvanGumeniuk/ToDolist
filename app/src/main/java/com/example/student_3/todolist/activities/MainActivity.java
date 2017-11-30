@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.student_3.todolist.ActivityRequest;
@@ -22,14 +28,17 @@ import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.Constants;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
-import com.example.student_3.todolist.data.FilesDataSource;
+import com.example.student_3.todolist.data.FileDataSource;
+import com.example.student_3.todolist.listeners.OnDataChangedListener;
+import com.example.student_3.todolist.listeners.OnTaskClickListener;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.decorators.GridSpacingItemDecoration;
 import com.example.student_3.todolist.models.User;
 
-public class MainActivity extends BaseActivity {
+
+public class MainActivity extends BaseActivity implements OnTaskClickListener, OnDataChangedListener{
 
     private final static String GRID_LAYOUT = "grid layout";
 
@@ -52,8 +61,9 @@ public class MainActivity extends BaseActivity {
             gridLayout = savedInstanceState.getBoolean(GRID_LAYOUT, true);
         }
         initCreateTaskButton();
-        dataSource = new SharedPreferenceDataSource(this);
         initTaskRecycler();
+        dataSource = new FileDataSource(this, this);
+        initTaskAdapter();
     }
 
     @Override
@@ -64,7 +74,10 @@ public class MainActivity extends BaseActivity {
     private void initTaskRecycler(){
         taskRecyclerView = findViewById(R.id.taskRecyclerView);
         setLayoutForRecyclerView();
-        taskAdapter = new TaskAdapterWithStyles(dataSource.getTaskList());
+    }
+
+    private void initTaskAdapter(){
+        taskAdapter = new TaskAdapterWithStyles(dataSource.getTaskList(), this);
         taskRecyclerView.setAdapter(taskAdapter);
     }
 
@@ -92,6 +105,13 @@ public class MainActivity extends BaseActivity {
             taskRecyclerView.removeItemDecoration(dividerItemDecoration);
             taskRecyclerView.addItemDecoration(gridSpacingItemDecoration);
             taskRecyclerView.setLayoutManager(gridLayoutManager);
+        }
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        if(taskAdapter != null){
+            taskAdapter.notifyDataSetChanged();
         }
     }
 
@@ -152,6 +172,24 @@ public class MainActivity extends BaseActivity {
                 startActivityForResult(intent, ActivityRequest.CREATE_TASK.ordinal());
             }
         });
+    }
+
+    @Override
+    public void onTaskClick(Task task, View view) {
+        View nameTextView = view.findViewById(R.id.nameTextView);
+        View descriptionTextView = view.findViewById(R.id.descriptionTextView);
+        View categoryTextView = view.findViewById(R.id.categoryTextView);
+        ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                new Pair<>(nameTextView, ViewCompat.getTransitionName(nameTextView)),
+                new Pair<>(descriptionTextView, ViewCompat.getTransitionName(descriptionTextView)),
+                new Pair<>(categoryTextView, ViewCompat.getTransitionName(categoryTextView)));
+        Intent intent = new Intent(this, TaskActivity.class);
+        intent.putExtra(BundleKey.TASK.name(), task);
+        intent.putExtra(BundleKey.NAME_TRANSITION.name(), ViewCompat.getTransitionName(nameTextView));
+        intent.putExtra(BundleKey.DESCRIPTION_TRANSITION.name(), ViewCompat.getTransitionName(descriptionTextView));
+        intent.putExtra(BundleKey.CATEGORY_TRANSITION.name(), ViewCompat.getTransitionName(categoryTextView));
+        ActivityCompat.startActivity(this, intent, activityOptionsCompat.toBundle());
     }
 
     @Override

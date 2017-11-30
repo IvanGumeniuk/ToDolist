@@ -10,4 +10,5 @@ public enum ActivityRequest {
     CHECK_PASSWORD,
     WATCH_CATEGORY,
     ON_CHECK_PIN_PRESSED_BACK
+    EDIT_TASK,
 }

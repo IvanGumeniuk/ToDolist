@@ -7,4 +7,5 @@
     <dimen name="grid_spacing_vertical">3dip</dimen>
     <dimen name="grid_spacing_horizontal">8dip</dimen>
     <dimen name="grid_spacing_edge">3dip</dimen>
+    <dimen name="name_task_textview_weight">2</dimen>
 </resources>
