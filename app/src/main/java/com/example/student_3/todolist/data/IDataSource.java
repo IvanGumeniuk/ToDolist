@@ -15,6 +15,8 @@ import java.util.Calendar;
  */
 
 public interface IDataSource {
+    int defaultMaxId = 0;
+
     ArrayList<Task> getTaskList();
     ArrayList<Category> getCategoryList();
     boolean createTask(@NonNull Task task);

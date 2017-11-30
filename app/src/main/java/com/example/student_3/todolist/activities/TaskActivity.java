@@ -6,8 +6,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +23,7 @@ public class TaskActivity extends AppCompatActivity {
     private TextView descriptionTask;
     private TextView categoryName;
     private Toolbar toolbar;
-    private FloatingActionButton fab;
+    private FloatingActionButton floatingActionButton;
     private Task task;
     private String nameTransition, descriptionTransition, categoryTransition;
 
@@ -45,11 +43,11 @@ public class TaskActivity extends AppCompatActivity {
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         descriptionTask = (TextView) findViewById(R.id.descriptionTask);
         categoryName = (TextView) findViewById(R.id.categoryName);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         setTransitions();
         fillData();
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TaskActivity.this, CreateTaskActivity.class);

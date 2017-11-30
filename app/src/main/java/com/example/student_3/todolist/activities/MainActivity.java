@@ -24,13 +24,15 @@ import com.example.student_3.todolist.ActivityRequest;
 import com.example.student_3.todolist.BundleKey;
 import com.example.student_3.todolist.R;
 import com.example.student_3.todolist.adapters.TaskAdapterWithStyles;
+import com.example.student_3.todolist.data.FileDataSource;
+import com.example.student_3.todolist.listeners.OnDataChangedListener;
 import com.example.student_3.todolist.listeners.OnTaskClickListener;
 import com.example.student_3.todolist.models.Task;
 import com.example.student_3.todolist.data.IDataSource;
 import com.example.student_3.todolist.data.SharedPreferenceDataSource;
 import com.example.student_3.todolist.decorators.GridSpacingItemDecoration;
 
-public class MainActivity extends AppCompatActivity implements OnTaskClickListener{
+public class MainActivity extends AppCompatActivity implements OnTaskClickListener, OnDataChangedListener{
 
     private final static String GRID_LAYOUT = "grid layout";
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnTaskClickListen
         }
         initCreateTaskButton();
         initTaskRecycler();
-        dataSource = new SharedPreferenceDataSource(this);
+        dataSource = new FileDataSource(this, this);
         initTaskAdapter();
     }
 
@@ -96,6 +98,13 @@ public class MainActivity extends AppCompatActivity implements OnTaskClickListen
             taskRecyclerView.removeItemDecoration(dividerItemDecoration);
             taskRecyclerView.addItemDecoration(gridSpacingItemDecoration);
             taskRecyclerView.setLayoutManager(gridLayoutManager);
+        }
+    }
+
+    @Override
+    public void notifyDataChanged() {
+        if(taskAdapter != null){
+            taskAdapter.notifyDataSetChanged();
         }
     }
 
